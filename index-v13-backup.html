@@ -1,0 +1,2147 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="OSINT Academy V12 — интерактивная академия OSINT: курс, практические лаборатории, Google Dork Lab, справочник инструментов, книги, AI-наставник и система прогресса.">
+  <title>OSINT Academy V12 — интерактивное обучение OSINT</title>
+  <style>
+    :root{
+      --bg:#080b12; --panel:#101622; --panel2:#151c2a; --text:#edf2f7;
+      --muted:#9aa7b7; --accent:#67e8f9; --accent2:#8b5cf6; --line:#263244;
+      --ok:#86efac; --warn:#fcd34d; --danger:#fca5a5; --shadow:0 20px 60px rgba(0,0,0,.28);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:radial-gradient(circle at 20% 0%,#142338 0,#080b12 38%);color:var(--text);font:16px/1.65 Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+    a{color:inherit;text-decoration:none}
+    button{font:inherit}
+    .wrap{width:min(1120px,92%);margin:auto}
+    header{position:sticky;top:0;z-index:20;background:rgba(8,11,18,.82);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.07)}
+    nav{height:72px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+    .logo{font-weight:800;letter-spacing:.4px;display:flex;align-items:center;gap:10px}
+    .logo span{display:grid;place-items:center;width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#071018}
+    .links{display:flex;gap:22px;color:var(--muted);font-size:14px}
+    .links a:hover{color:var(--text)}
+    .hero{padding:88px 0 72px;display:grid;grid-template-columns:1.15fr .85fr;gap:42px;align-items:center}
+    .badge{display:inline-flex;padding:7px 11px;border:1px solid #294052;border-radius:999px;color:#a8edf5;background:#0b1822;font-size:13px}
+    h1{font-size:clamp(42px,6vw,72px);line-height:1.02;margin:18px 0;letter-spacing:-2.5px}
+    .gradient{background:linear-gradient(90deg,var(--accent),#c4b5fd);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .lead{font-size:19px;color:var(--muted);max-width:680px}
+    .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+    .btn{border:1px solid var(--line);padding:12px 17px;border-radius:12px;cursor:pointer;color:var(--text);background:var(--panel)}
+    .btn.primary{background:linear-gradient(135deg,#22d3ee,#7c3aed);border:0;font-weight:750}
+    .btn:hover{transform:translateY(-1px);filter:brightness(1.08)}
+    .terminal{background:#06090e;border:1px solid #263344;border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
+    .dots{display:flex;gap:7px;padding:13px 15px;border-bottom:1px solid #1c2633}.dots i{width:9px;height:9px;border-radius:50%;background:#4b5563}
+    .screen{padding:25px;font:14px/1.8 ui-monospace,SFMono-Regular,Menlo,monospace;color:#cbd5e1}
+    .cyan{color:var(--accent)} .green{color:var(--ok)} .yellow{color:var(--warn)}
+    section{padding:62px 0}
+    .section-head{margin-bottom:26px}.section-head h2{font-size:34px;margin:0 0 7px}.section-head p{color:var(--muted);margin:0}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .card{background:linear-gradient(180deg,rgba(21,28,42,.9),rgba(13,18,28,.9));border:1px solid var(--line);border-radius:18px;padding:23px;box-shadow:0 10px 35px rgba(0,0,0,.13)}
+    .card h3{margin:10px 0 7px}.card p{color:var(--muted);margin:0}
+    .num{font:800 13px ui-monospace;color:var(--accent);letter-spacing:1px}
+    .course{display:grid;grid-template-columns:280px 1fr;gap:18px}
+    .sidebar{position:sticky;top:92px;height:max-content}
+    .lesson{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:10px;color:var(--muted);cursor:pointer;margin:4px 0}
+    .lesson:hover,.lesson.active{background:#172131;color:var(--text)}
+    .lesson b{font-size:12px;color:var(--accent)}
+    .lesson-panel{min-height:420px}
+    .lesson-panel h3{font-size:28px;margin-top:0}
+    .lesson-panel p,.lesson-panel li{color:#b8c3d0}
+    .callout{padding:16px 18px;border-left:3px solid var(--accent);background:#0b1720;border-radius:0 12px 12px 0;margin:18px 0}
+    .danger{border-left-color:var(--danger);background:#211216}
+    .steps{counter-reset:step;display:grid;gap:12px}
+    .step{counter-increment:step;display:flex;gap:14px;padding:16px;border:1px solid var(--line);border-radius:14px;background:var(--panel)}
+    .step:before{content:counter(step);flex:0 0 32px;height:32px;display:grid;place-items:center;border-radius:9px;background:#17283a;color:var(--accent);font-weight:800}
+    .checklist{display:grid;gap:9px}.check{padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:#0d131d}
+    .check input{accent-color:#22d3ee;margin-right:9px}
+    .quiz{display:grid;gap:14px}.q{padding:18px;border:1px solid var(--line);border-radius:14px;background:var(--panel)}
+    .q label{display:block;padding:8px;color:var(--muted);cursor:pointer}.q label:hover{color:var(--text)}
+    #result{margin-top:14px;font-weight:700}
+    footer{padding:35px 0 55px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}
+    .progress{position:fixed;left:0;top:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0;z-index:99}
+
+    .tool-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+    .tool{border:1px solid var(--line);border-radius:15px;padding:18px;background:#0d131d}
+    .tool .tag{display:inline-block;font:700 11px ui-monospace;color:var(--accent);border:1px solid #28404b;padding:3px 7px;border-radius:999px;margin-bottom:8px}
+    .tool h3{margin:3px 0 6px}.tool p{margin:0;color:var(--muted)}
+    .tool code,.lesson-panel code{color:#b9f6ff;background:#08131b;padding:2px 5px;border-radius:5px}
+    .timeline{display:grid;gap:12px}
+    .story{border:1px solid var(--line);border-radius:16px;padding:20px;background:linear-gradient(135deg,#111a27,#0c121c)}
+    .story h3{margin:0 0 7px}.story p{color:var(--muted);margin:6px 0}
+    .story .answer{margin-top:12px;padding:12px 14px;border-radius:10px;background:#0a141d;border-left:3px solid var(--accent)}
+    .matrix{width:100%;border-collapse:collapse;overflow:hidden;border-radius:12px}
+    .matrix th,.matrix td{border:1px solid var(--line);padding:11px;text-align:left;vertical-align:top}
+    .matrix th{background:#172131}.matrix td{color:#b8c3d0}
+    .search-box{display:grid;grid-template-columns:1fr auto;gap:10px}
+    .search-box input{width:100%;background:#0a1018;border:1px solid var(--line);color:var(--text);padding:13px;border-radius:11px;outline:none}
+    .search-results{margin-top:12px;display:grid;gap:8px}.result-item{padding:12px;border:1px solid var(--line);border-radius:11px;color:var(--muted)}
+    .result-item b{color:var(--text)}
+    @media(max-width:850px){.tool-grid{grid-template-columns:1fr}}
+
+    @media(max-width:850px){.hero,.course{grid-template-columns:1fr}.grid{grid-template-columns:1fr 1fr}.sidebar{position:static}}
+    @media(max-width:560px){.links{display:none}.grid{grid-template-columns:1fr}h1{letter-spacing:-1.5px}.hero{padding-top:55px}}
+  
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:18px}
+    .stat{padding:16px;border:1px solid var(--line);border-radius:14px;background:#0d141e}
+    .stat b{display:block;font-size:26px}.stat span{color:var(--muted);font-size:13px}
+    .tool-grid{grid-template-columns:repeat(3,1fr)}
+    .tool-link{display:inline-block;margin-top:12px;color:var(--accent);font-weight:700;font-size:13px}
+    .lab-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .field{display:grid;gap:6px;margin-top:10px}.field label{font-size:13px;color:var(--muted)}
+    .field input,.field select,.field textarea{width:100%;background:#0a1018;border:1px solid var(--line);color:var(--text);padding:12px;border-radius:10px}
+    .field textarea{min-height:110px;resize:vertical}
+    .flashcard{min-height:170px;display:grid;place-items:center;text-align:center;padding:24px;border:1px solid var(--line);border-radius:16px;background:#0d141e}
+    .flashcard .term{font-size:28px;font-weight:850}.flashcard .definition{color:var(--muted)}
+    .resource-list{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .resource{padding:16px;border:1px solid var(--line);border-radius:14px;background:#0d141e}
+    .resource a{color:var(--accent);font-weight:700}
+    .matrix{width:100%;border-collapse:collapse}.matrix th,.matrix td{border:1px solid var(--line);padding:10px;text-align:left;vertical-align:top}.matrix th{background:#172131}.matrix td{color:#b8c3d0}
+    @media(max-width:850px){.tool-grid,.resource-list{grid-template-columns:1fr 1fr}.lab-grid{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}}
+    @media(max-width:560px){.tool-grid,.resource-list,.stats{grid-template-columns:1fr}}
+
+  
+:root{
+  --bg:#070b11;--panel:#0d141e;--panel2:#111b28;--line:#243244;
+  --text:#edf3fa;--muted:#9aa9ba;--accent:#62d5ff;--accent2:#8b7cff;
+  --good:#62d69b;--warn:#f3c969;--bad:#ff7b8b;--shadow:0 18px 55px rgba(0,0,0,.28);
+}
+html{scroll-behavior:smooth}
+body{background:
+ radial-gradient(circle at 15% 0%,rgba(98,213,255,.08),transparent 28rem),
+ radial-gradient(circle at 85% 10%,rgba(139,124,255,.07),transparent 30rem),
+ var(--bg);color:var(--text);line-height:1.65}
+section{scroll-margin-top:90px}
+.card,.tool,.resource,.story,.q,.callout,.flashcard{box-shadow:var(--shadow);transition:transform .18s ease,border-color .18s ease,background .18s ease}
+.card:hover,.tool:hover,.resource:hover{transform:translateY(-2px);border-color:#36506c}
+.hero{position:relative;overflow:hidden}
+.hero:after{content:"";position:absolute;inset:auto -10% -55% -10%;height:70%;background:radial-gradient(ellipse,rgba(98,213,255,.08),transparent 65%);pointer-events:none}
+.section-head{max-width:900px}
+.section-head h2{letter-spacing:-.025em}
+.badge{border:1px solid var(--line);background:rgba(13,20,30,.72);backdrop-filter:blur(10px)}
+.progress-wrap{position:sticky;top:64px;z-index:5;background:rgba(7,11,17,.82);backdrop-filter:blur(12px);padding:8px 0}
+.progress-bar{height:8px;border-radius:99px;background:#111c29;overflow:hidden}.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .3s}
+.module-search{display:flex;gap:10px;margin:14px 0}.module-search input{flex:1}
+.module-list{max-height:420px;overflow:auto;scrollbar-width:thin}
+.module-list button{width:100%;text-align:left;margin:4px 0}
+.status{font-size:13px;color:var(--muted);margin-top:8px}
+.roadmap{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.roadmap .step{padding:18px;border:1px solid var(--line);border-radius:15px;background:var(--panel)}
+.roadmap .num{font-size:12px;color:var(--accent);font-weight:800}
+.checklist{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
+.checklist label{display:flex;gap:9px;align-items:flex-start;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--panel)}
+.checklist input{accent-color:var(--accent);margin-top:5px}
+.source-card{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:start;padding:14px;border:1px solid var(--line);border-radius:13px;background:var(--panel)}
+.source-badge{font-size:11px;padding:4px 7px;border-radius:999px;border:1px solid var(--line);white-space:nowrap}
+.source-badge.legal{color:var(--good)}.source-badge.conditional{color:var(--warn)}.source-badge.no{color:var(--bad)}
+.small-note{font-size:12px;color:var(--muted)}
+.kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;border:1px solid var(--line);background:#0a1018;padding:2px 6px;border-radius:6px}
+@media(max-width:900px){.roadmap{grid-template-columns:1fr 1fr}.checklist{grid-template-columns:1fr}}
+@media(max-width:600px){.roadmap{grid-template-columns:1fr}.module-search{flex-direction:column}.source-card{grid-template-columns:1fr}}
+
+
+/* OSINT Academy v5 design system */
+:root{
+  --bg:#070b12;--bg2:#0c1220;--panel:#101827;--panel2:#141f31;
+  --text:#edf4ff;--muted:#9aa9bf;--line:rgba(255,255,255,.09);
+  --primary:#6d5dfc;--primary2:#20cdbb;--accent:#a78bfa;
+  --good:#4ade80;--warn:#fbbf24;--danger:#fb7185;
+  --shadow:0 18px 55px rgba(0,0,0,.25);--radius:18px;
+}
+[data-theme="light"]{
+  --bg:#f4f7fb;--bg2:#eaf0f7;--panel:#fff;--panel2:#f6f8fc;
+  --text:#142033;--muted:#59677b;--line:rgba(20,32,51,.12);
+  --primary:#5747e8;--primary2:#087f73;--accent:#6d28d9;
+  --shadow:0 12px 35px rgba(25,40,70,.10);
+}
+[data-performance="low"]{
+  --shadow:none;
+}
+html{scroll-behavior:smooth}
+body{
+  background:
+    radial-gradient(circle at 8% 0%,color-mix(in srgb,var(--primary) 16%,transparent),transparent 30rem),
+    radial-gradient(circle at 92% 10%,color-mix(in srgb,var(--primary2) 10%,transparent),transparent 26rem),
+    var(--bg);color:var(--text);
+  transition:background .2s,color .2s;
+}
+[data-theme="light"] body{background:linear-gradient(180deg,#f7f9fc,var(--bg))}
+.navbar,.card,.tool-card,.lab,.hero,.module,.resource-card{
+  border-color:var(--line);box-shadow:var(--shadow);background:color-mix(in srgb,var(--panel) 94%,transparent);
+}
+button,.btn{transition:transform .12s ease,filter .12s ease}
+button:hover,.btn:hover{transform:translateY(-1px);filter:brightness(1.06)}
+.theme-switcher{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.theme-switcher button.active{outline:2px solid var(--primary2)}
+.theme-switcher .btn{padding:7px 10px;font-size:12px}
+.kicker{font-size:11px;text-transform:uppercase;letter-spacing:.16em;color:var(--primary2)}
+.faq-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.faq-item{border:1px solid var(--line);border-radius:16px;background:var(--panel);overflow:hidden}
+.faq-item summary{cursor:pointer;padding:15px 16px;font-weight:700;list-style:none}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary:after{content:"+";float:right;color:var(--primary2)}
+.faq-item[open] summary:after{content:"−"}
+.faq-item p{padding:0 16px 16px;margin:0;color:var(--muted);line-height:1.6}
+.directory{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.directory-card{padding:16px;border:1px solid var(--line);border-radius:16px;background:var(--panel)}
+.directory-card .site{font-weight:800;font-size:17px}
+.directory-card .type{display:inline-block;font-size:11px;margin-top:8px;padding:4px 8px;border-radius:999px;background:color-mix(in srgb,var(--primary) 15%,transparent);color:var(--accent)}
+.directory-card a{color:var(--primary2);text-decoration:none}
+.assistant{border:1px solid var(--line);border-radius:20px;background:var(--panel);padding:14px}
+.ai-messages{height:360px;overflow:auto;padding:10px;border-radius:15px;background:var(--bg2)}
+.ai-msg{max-width:86%;padding:10px 12px;margin:8px 0;border-radius:14px;line-height:1.5}
+.ai-msg.user{margin-left:auto;background:color-mix(in srgb,var(--primary) 22%,transparent)}
+.ai-msg.bot{background:color-mix(in srgb,var(--primary2) 10%,transparent)}
+.ai-input{display:flex;gap:8px;margin-top:10px}
+.ai-input input{flex:1;min-width:0}
+.graph-shell{border:1px solid var(--line);border-radius:20px;background:var(--panel);padding:14px}
+.graph-toolbar{display:grid;grid-template-columns:1fr 1fr 1.3fr auto auto;gap:8px;margin-bottom:10px}
+#graphCanvas{height:560px;background:var(--bg2);border-color:var(--line)}
+.graph-legend{display:flex;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:12px;margin-top:8px}
+.speed-box{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+@media(max-width:900px){.directory,.faq-grid{grid-template-columns:1fr 1fr}.graph-toolbar{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.directory,.faq-grid{grid-template-columns:1fr}.graph-toolbar{grid-template-columns:1fr}.ai-messages{height:300px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+[data-performance="low"] *{animation:none!important;backdrop-filter:none!important}
+
+
+
+/* Author signature */
+.author-signature{display:inline-flex;align-items:center;gap:10px;margin-top:18px;padding:9px 14px;border:1px solid var(--line);border-radius:999px;background:var(--panel);box-shadow:0 8px 24px rgba(0,0,0,.08);font-size:13px;color:var(--muted);backdrop-filter:blur(8px)}
+.author-signature .author-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px rgba(98,213,255,.55);flex:0 0 auto}
+.author-signature strong{color:var(--text);font-weight:800;letter-spacing:.2px}
+.author-signature .author-role{opacity:.75}
+[data-theme="light"] .author-signature{box-shadow:0 8px 24px rgba(20,40,70,.08);background:rgba(255,255,255,.82)}
+@media(max-width:560px){.author-signature{margin-top:14px;font-size:12px;padding:8px 12px}}
+
+/* v6 stability layer */
+:root{color-scheme:dark;--page:#070b11;--surface:#0d141e;--surface2:#111b28;--ink:#edf3fa;--sub:#9aa9ba;--border:#243244;--input:#0a1018;--code:#08131b}
+html[data-theme="light"]{color-scheme:light;--bg:#f5f7fb;--bg2:#eef2f7;--panel:#ffffff;--panel2:#f7f9fc;--text:#182230;--muted:#596879;--line:#d7dee8;--input:#ffffff;--code:#eef5f8;--accent:#087f9b;--accent2:#6657d9;--shadow:0 12px 32px rgba(30,45,65,.10)}
+html[data-theme="light"] body{background:linear-gradient(180deg,#f9fbfd 0%,#eef3f8 100%);color:var(--text)}
+html[data-theme="light"] header{background:rgba(249,251,253,.94);border-bottom-color:#dfe5ec;backdrop-filter:blur(10px)}
+html[data-theme="light"] .badge,html[data-theme="light"] .btn,html[data-theme="light"] .card,html[data-theme="light"] .tool,html[data-theme="light"] .resource,html[data-theme="light"] .story,html[data-theme="light"] .q,html[data-theme="light"] .flashcard,html[data-theme="light"] .stat,html[data-theme="light"] .directory-card,html[data-theme="light"] .graph-shell{background:#fff;color:var(--text);border-color:var(--line);box-shadow:var(--shadow)}
+html[data-theme="light"] .card,html[data-theme="light"] .tool,html[data-theme="light"] .resource,html[data-theme="light"] .story{background:linear-gradient(180deg,#fff,#f9fbfd)}
+html[data-theme="light"] .lesson:hover,html[data-theme="light"] .lesson.active{background:#eaf1f7;color:#182230}
+html[data-theme="light"] .callout{background:#eef8fb;border-left-color:#087f9b}
+html[data-theme="light"] .danger{background:#fff1f2;border-left-color:#c24155}
+html[data-theme="light"] .step,html[data-theme="light"] .check,html[data-theme="light"] .matrix th,html[data-theme="light"] .ai-messages,html[data-theme="light"] .search-box input,html[data-theme="light"] .field input,html[data-theme="light"] .field select,html[data-theme="light"] .field textarea{background:#fff;color:var(--text);border-color:var(--line)}
+html[data-theme="light"] .matrix th{background:#e9eef4}html[data-theme="light"] .matrix td{color:#405064}
+html[data-theme="light"] .terminal{background:#101722;border-color:#263445}html[data-theme="light"] .screen{color:#dbe5ef}
+html[data-theme="light"] .dots{border-bottom-color:#263445}
+html[data-theme="light"] .tool .tag{border-color:#b8d6df;background:#f0fafc}html[data-theme="light"] .tool code,html[data-theme="light"] .lesson-panel code{background:#eef5f8;color:#075e70}
+html[data-theme="light"] .story .answer{background:#f0f7fa}html[data-theme="light"] .directory-card .type{background:#edf2f7;color:#46586b}
+html[data-theme="light"] footer{background:#eef3f8}html[data-theme="light"] .small-note{color:#667487!important}
+.btn:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-visible{outline:3px solid rgba(98,213,255,.35);outline-offset:2px}
+html[data-performance="low"] *,html[data-performance="low"] *::before,html[data-performance="low"] *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+html[data-performance="low"] .card:hover,html[data-performance="low"] .tool:hover,html[data-performance="low"] .resource:hover{transform:none}
+html[data-performance="low"] header{backdrop-filter:none}html[data-performance="low"] .hero:after{display:none}html[data-performance="low"] .graph-shell{box-shadow:none}
+html[data-performance="high"] .card,html[data-performance="high"] .tool,html[data-performance="high"] .resource{transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
+.ai-layout{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:14px}.ai-side{border:1px solid var(--line);border-radius:16px;padding:15px;background:var(--panel)}.ai-side h4{margin:0 0 8px}.ai-suggestion{display:block;width:100%;text-align:left;margin:7px 0;padding:10px;border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:10px;cursor:pointer}.ai-suggestion:hover{border-color:var(--accent)}
+.ai-msg{padding:10px 12px;margin:8px 0;border-radius:12px;border:1px solid var(--line);white-space:pre-wrap}.ai-msg.user{background:var(--panel2)}.ai-msg.bot{background:var(--panel)}
+.graph-wrap{position:relative}.graph-help{display:flex;gap:8px;flex-wrap:wrap;color:var(--muted);font-size:12px;margin:7px 0}.graph-empty{position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);pointer-events:none;text-align:center;padding:30px}.graph-stats{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}.graph-pill{padding:6px 9px;border:1px solid var(--line);border-radius:999px;color:var(--muted);font-size:12px;background:var(--panel2)}
+.toolbox{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.mini-tool{padding:13px;border:1px solid var(--line);border-radius:13px;background:var(--panel)}.mini-tool b{display:block;margin-bottom:3px}.mini-tool span{color:var(--muted);font-size:12px}
+@media(max-width:900px){.ai-layout{grid-template-columns:1fr}.toolbox{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.toolbox{grid-template-columns:1fr}.graph-help{font-size:11px}}
+
+/* v8 — author feedback */
+.feedback-wrap{display:grid;grid-template-columns:1.15fr .85fr;gap:18px}
+.feedback-card{position:relative;overflow:hidden;padding:26px;border:1px solid var(--line);border-radius:20px;background:var(--panel);box-shadow:var(--shadow)}
+.feedback-card:before{content:"";position:absolute;inset:0 auto auto 0;width:100%;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.feedback-kicker{display:inline-flex;align-items:center;gap:7px;padding:6px 10px;border:1px solid var(--line);border-radius:999px;color:var(--muted);font-size:12px;background:var(--panel2)}
+.feedback-title{font-size:28px;margin:12px 0 7px}
+.feedback-text{color:var(--muted);margin:0 0 18px}
+.contact-list{display:grid;gap:10px}
+.contact-link{display:flex;align-items:center;gap:13px;padding:14px;border:1px solid var(--line);border-radius:14px;background:var(--panel2);color:var(--text)}
+.contact-icon{width:38px;height:38px;display:grid;place-items:center;border-radius:11px;background:color-mix(in srgb,var(--accent) 13%,transparent);color:var(--accent);font-weight:900}
+.contact-meta{min-width:0}
+.contact-meta small{display:block;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.08em}
+.contact-meta b{display:block;overflow-wrap:anywhere}
+.feedback-note{font-size:12px;color:var(--muted);margin-top:14px}
+.feedback-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}
+.feedback-copy{border:1px solid var(--line);background:var(--panel2);color:var(--text);padding:10px 13px;border-radius:10px;cursor:pointer}
+.feedback-copy:hover{border-color:var(--accent)}
+.feedback-status{min-height:20px;margin-top:9px;color:var(--accent);font-size:12px}
+html[data-theme="light"] .feedback-card{background:#fff}
+html[data-theme="light"] .contact-link,html[data-theme="light"] .feedback-copy{background:#f7f9fc}
+@media(max-width:800px){.feedback-wrap{grid-template-columns:1fr}}
+
+
+/* =========================
+   OSINT ACADEMY V9
+   Performance + navigation layer
+   ========================= */
+:root{
+  --v9-max:1180px;
+  --v9-glass:rgba(255,255,255,.055);
+  --v9-radius:18px;
+}
+body{overflow-x:hidden}
+.wrap{width:min(var(--v9-max),92%)}
+button,a,input,select,textarea{touch-action:manipulation}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{
+  outline:2px solid var(--accent);outline-offset:3px
+}
+::selection{background:color-mix(in srgb,var(--accent) 30%,transparent)}
+.v9-topbar{
+  position:fixed;right:18px;bottom:18px;z-index:70;display:flex;gap:8px;
+  padding:8px;border:1px solid var(--line);border-radius:16px;background:color-mix(in srgb,var(--panel) 90%,transparent);
+  box-shadow:0 14px 40px rgba(0,0,0,.22);backdrop-filter:blur(12px)
+}
+.v9-topbar button{
+  border:1px solid var(--line);background:var(--panel2);color:var(--text);
+  border-radius:11px;padding:9px 11px;cursor:pointer;font-size:12px
+}
+.v9-topbar button:hover{border-color:var(--accent)}
+.v9-command{
+  position:fixed;inset:0;z-index:100;background:rgba(3,6,12,.72);backdrop-filter:blur(8px);
+  display:none;align-items:flex-start;justify-content:center;padding:9vh 18px
+}
+.v9-command.open{display:flex}
+.v9-command-box{width:min(760px,100%);background:var(--panel);border:1px solid var(--line);border-radius:20px;box-shadow:0 30px 90px rgba(0,0,0,.45);overflow:hidden}
+.v9-command-head{display:flex;align-items:center;gap:10px;padding:14px;border-bottom:1px solid var(--line)}
+.v9-command-head input{flex:1;border:0;outline:0;background:transparent;color:var(--text);font-size:16px}
+.v9-command-list{max-height:55vh;overflow:auto;padding:8px}
+.v9-command-item{display:flex;gap:12px;align-items:center;padding:12px;border-radius:12px;cursor:pointer}
+.v9-command-item:hover,.v9-command-item.active{background:var(--panel2)}
+.v9-command-item small{display:block;color:var(--muted)}
+.v9-kbd{font:12px ui-monospace,SFMono-Regular,Menlo,monospace;border:1px solid var(--line);border-bottom-width:2px;border-radius:6px;padding:2px 6px;color:var(--muted)}
+.v9-welcome{
+  position:fixed;inset:0;z-index:95;background:rgba(3,6,12,.76);backdrop-filter:blur(10px);
+  display:flex;align-items:center;justify-content:center;padding:18px
+}
+.v9-welcome.hidden{display:none}
+.v9-welcome-card{
+  width:min(760px,100%);padding:30px;border:1px solid var(--line);border-radius:24px;
+  background:linear-gradient(145deg,var(--panel),var(--panel2));box-shadow:0 35px 100px rgba(0,0,0,.45)
+}
+.v9-ai-orb{width:58px;height:58px;border-radius:17px;display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));color:#071018;font-weight:950;font-size:24px;
+  box-shadow:0 0 35px color-mix(in srgb,var(--accent) 25%,transparent)}
+.v9-welcome h2{font-size:clamp(27px,5vw,44px);margin:18px 0 10px;letter-spacing:-1.2px}
+.v9-welcome p{color:var(--muted);max-width:650px}
+.v9-welcome-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
+.v9-welcome-grid div{padding:13px;border:1px solid var(--line);border-radius:13px;background:var(--v9-glass)}
+.v9-welcome-grid b{display:block;margin-bottom:3px}
+.v9-welcome-grid span{font-size:12px;color:var(--muted)}
+.v9-ai-dock{
+  position:fixed;right:18px;bottom:86px;z-index:65;width:min(390px,calc(100vw - 36px));
+  display:none;border:1px solid var(--line);border-radius:20px;background:var(--panel);
+  box-shadow:0 24px 70px rgba(0,0,0,.36);overflow:hidden
+}
+.v9-ai-dock.open{display:block}
+.v9-ai-head{display:flex;align-items:center;justify-content:space-between;padding:13px 15px;border-bottom:1px solid var(--line)}
+.v9-ai-head strong{display:flex;align-items:center;gap:8px}
+.v9-ai-body{padding:14px;max-height:330px;overflow:auto}
+.v9-ai-msg{padding:10px 12px;border-radius:13px;background:var(--panel2);margin-bottom:9px;font-size:13px}
+.v9-ai-msg.user{background:color-mix(in srgb,var(--accent) 11%,var(--panel2))}
+.v9-ai-input{display:flex;gap:7px;padding:10px;border-top:1px solid var(--line)}
+.v9-ai-input input{min-width:0;flex:1;border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:10px;padding:9px}
+.v9-ai-input button{border:1px solid var(--line);background:var(--accent);color:#071018;border-radius:10px;padding:9px 11px;font-weight:800;cursor:pointer}
+.v9-jump{
+  position:fixed;left:18px;bottom:18px;z-index:70;border:1px solid var(--line);background:var(--panel);
+  color:var(--text);border-radius:13px;padding:10px 12px;cursor:pointer;box-shadow:0 14px 40px rgba(0,0,0,.2)
+}
+.v9-hub{display:grid;grid-template-columns:1.1fr .9fr;gap:16px;margin:18px 0 42px}
+.v9-hub-card{border:1px solid var(--line);border-radius:20px;background:linear-gradient(145deg,var(--panel),var(--panel2));padding:20px}
+.v9-hub-list{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-top:13px}
+.v9-hub-list a{padding:11px;border:1px solid var(--line);border-radius:12px;color:var(--text);background:var(--v9-glass)}
+.v9-hub-list a:hover{border-color:var(--accent);transform:translateY(-1px)}
+.v9-meter{height:9px;background:var(--panel2);border-radius:999px;overflow:hidden;border:1px solid var(--line)}
+.v9-meter span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .35s ease}
+.v9-statrow{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:12px;margin:8px 0 5px}
+.v9-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.v9-tool{padding:15px;border:1px solid var(--line);border-radius:15px;background:var(--panel2);display:flex;flex-direction:column;min-height:165px}
+.v9-tool .v9-tag{font-size:10px;color:var(--accent);text-transform:uppercase;letter-spacing:.08em}
+.v9-tool h3{margin:7px 0 5px;font-size:17px}
+.v9-tool p{margin:0;color:var(--muted);font-size:13px;flex:1}
+.v9-tool a{margin-top:12px;color:var(--accent);font-size:13px}
+.v9-filterbar{display:flex;gap:9px;flex-wrap:wrap;margin:13px 0 16px}
+.v9-filterbar input,.v9-filterbar select,.v9-input{
+  border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:11px;padding:10px 12px;outline:0
+}
+.v9-filterbar input{min-width:min(420px,100%)}
+.v9-dork{display:grid;grid-template-columns:1fr 330px;gap:15px}
+.v9-dork-main,.v9-dork-side{border:1px solid var(--line);border-radius:18px;background:var(--panel);padding:17px}
+.v9-dork textarea{width:100%;min-height:115px;resize:vertical;border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:12px;padding:12px;font:13px ui-monospace,SFMono-Regular,Menlo,monospace}
+.v9-dork-chips{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0}
+.v9-chip{border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:999px;padding:7px 9px;cursor:pointer;font-size:12px}
+.v9-chip:hover{border-color:var(--accent)}
+.v9-output{white-space:pre-wrap;word-break:break-word;margin-top:12px;padding:13px;border:1px dashed var(--line);border-radius:12px;background:var(--v9-glass);font:12px/1.55 ui-monospace,SFMono-Regular,Menlo,monospace}
+.v9-lab{border:1px solid var(--line);border-radius:18px;padding:18px;background:linear-gradient(145deg,var(--panel),var(--panel2))}
+.v9-lab + .v9-lab{margin-top:12px}
+.v9-lab-row{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+.v9-choice{padding:10px 12px;border:1px solid var(--line);border-radius:11px;background:var(--panel2);cursor:pointer;color:var(--text)}
+.v9-choice.correct{border-color:var(--ok);box-shadow:0 0 0 2px color-mix(in srgb,var(--ok) 15%,transparent)}
+.v9-choice.wrong{border-color:var(--danger)}
+.v9-result{margin-top:11px;color:var(--muted);font-size:13px}
+.v9-books{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}
+.v9-book{border:1px solid var(--line);border-radius:18px;padding:18px;background:linear-gradient(145deg,var(--panel),var(--panel2))}
+.v9-book h3{margin:0 0 4px}
+.v9-book .meta{font-size:12px;color:var(--accent);margin-bottom:10px}
+.v9-book p{color:var(--muted);font-size:13px}
+.v9-book ul{color:var(--muted);font-size:13px}
+.v9-legal{border-left:3px solid var(--warn);padding:12px 14px;background:color-mix(in srgb,var(--warn) 6%,transparent);border-radius:0 12px 12px 0}
+.v9-footer-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:900px){
+  .v9-hub,.v9-dork{grid-template-columns:1fr}
+  .v9-grid{grid-template-columns:repeat(2,1fr)}
+  .v9-books{grid-template-columns:1fr}
+}
+@media(max-width:650px){
+  .links{display:none}
+  .v9-welcome-grid,.v9-grid{grid-template-columns:1fr}
+  .v9-topbar{right:10px;bottom:10px}
+  .v9-jump{left:10px;bottom:10px}
+  .v9-ai-dock{right:10px;bottom:70px;width:calc(100vw - 20px)}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}
+}
+
+
+/* =========================================================
+   OSINT ACADEMY V10 — STABILITY / PERFORMANCE SYSTEM
+   ========================================================= */
+:root{
+  --v10-max:1180px;
+  --v10-radius:18px;
+  --v10-shadow:0 12px 35px rgba(0,0,0,.16);
+}
+html{scroll-behavior:smooth}
+body{overflow-x:hidden}
+img{max-width:100%;height:auto}
+button,input,textarea,select{font:inherit}
+button,a{touch-action:manipulation}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+
+
+
+/* V12 intro: lightweight visual layer. No external assets, canvas, or heavy filters. */
+.v12-intro{
+  position:relative;width:min(720px,calc(100vw - 30px));min-height:500px;
+  padding:34px 38px 24px;border:1px solid rgba(103,232,249,.22);
+  border-radius:24px;overflow:hidden;background:#090e17;
+  box-shadow:0 24px 80px rgba(0,0,0,.38);
+}
+.v12-grid{position:absolute;inset:0;opacity:.22;pointer-events:none;
+  background-image:linear-gradient(rgba(103,232,249,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(103,232,249,.07) 1px,transparent 1px);
+  background-size:42px 42px;
+  mask-image:linear-gradient(to bottom,black,transparent 85%);
+}
+.v12-glow{position:absolute;width:300px;height:300px;right:-120px;top:-140px;border-radius:50%;
+  background:rgba(103,232,249,.10);pointer-events:none}
+.v12-brand{position:relative;display:flex;align-items:center;gap:12px}
+.v12-logo{display:grid;place-items:center;width:44px;height:44px;border-radius:13px;
+  color:#061018;font-weight:900;font-size:20px;background:linear-gradient(135deg,#67e8f9,#8b5cf6);
+  box-shadow:0 8px 28px rgba(103,232,249,.16)}
+.v12-kicker{font-size:13px;font-weight:850;letter-spacing:1.8px}
+.v12-version{margin-top:2px;color:#718096;font-size:10px;letter-spacing:1.1px}
+.v12-line{height:1px;background:linear-gradient(90deg,rgba(103,232,249,.45),rgba(139,92,246,.18),transparent);margin:25px 0}
+.v12-content{position:relative;max-width:610px}
+.v12-eyebrow{display:flex;align-items:center;gap:8px;color:#86efac;font-size:11px;font-weight:800;letter-spacing:1.3px}
+.v12-eyebrow span{width:7px;height:7px;border-radius:50%;background:#86efac;box-shadow:0 0 14px rgba(134,239,172,.65)}
+.v12-content h2{font-size:clamp(40px,7vw,64px);line-height:1.02;letter-spacing:-2.5px;margin:15px 0 14px}
+.v12-content h2 em{font-style:normal;color:#67e8f9}
+.v12-content>p{color:#a6b2c2;font-size:16px;line-height:1.7;max-width:570px;margin:0}
+.v12-content>p strong{color:#edf2f7}
+.v12-principles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:24px 0}
+.v12-principles>div{display:flex;align-items:center;gap:11px;padding:13px 14px;border:1px solid #222e40;border-radius:13px;background:rgba(16,22,34,.72)}
+.v12-principles b{color:#67e8f9;font:11px ui-monospace,SFMono-Regular,monospace}
+.v12-principles span{font-size:13px;font-weight:750;line-height:1.25}
+.v12-principles small{color:#718096;font-size:10px;font-weight:500}
+.v12-rule{display:flex;gap:12px;padding:13px 15px;border:1px solid rgba(252,211,77,.18);border-radius:13px;background:rgba(252,211,77,.035);color:#aeb8c5;font-size:12px;line-height:1.55}
+.v12-rule>span{color:#fcd34d}
+.v12-rule b{color:#edf2f7}
+.v12-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.v12-skip{display:block;margin:12px auto 0;border:0;background:none;color:#64748b;font-size:11px;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.v12-footer{position:absolute;left:38px;right:38px;bottom:18px;display:flex;justify-content:space-between;
+  color:#536176;font:9px ui-monospace,SFMono-Regular,monospace;letter-spacing:.7px}
+.v12-footer span:last-child{color:#86efac}
+@media(max-width:620px){
+  .v12-intro{min-height:540px;padding:25px 22px 22px;border-radius:19px}
+  .v12-principles{grid-template-columns:1fr}
+  .v12-principles>div{padding:10px 12px}
+  .v12-footer{left:22px;right:22px;font-size:8px}
+  .v12-footer span:first-child{display:none}
+  .v12-content h2{letter-spacing:-1.7px}
+}
+@media(prefers-reduced-motion:reduce){
+  .v12-intro *{animation:none!important;transition:none!important}
+}
+
+/* Instant welcome: no blur, no expensive backdrop-filter. */
+.v10-welcome{
+  position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;
+  padding:18px;background:rgba(5,8,15,.94)
+}
+.v10-welcome.is-hidden{display:none}
+.v10-welcome-card{
+  width:min(720px,100%);border:1px solid var(--line);border-radius:22px;padding:28px;
+  background:var(--panel);box-shadow:var(--v10-shadow)
+}
+.v10-orb{
+  width:52px;height:52px;border-radius:15px;display:grid;place-items:center;
+  background:var(--accent);color:#071018;font-weight:950;font-size:22px
+}
+.v10-welcome-card h2{font-size:clamp(28px,5vw,44px);line-height:1.05;margin:18px 0 9px}
+.v10-welcome-card p{color:var(--muted);line-height:1.6}
+.v10-welcome-points{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:18px 0}
+.v10-welcome-points>div{border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--panel2)}
+.v10-welcome-points b{display:block;margin-bottom:3px}
+.v10-welcome-points span{font-size:12px;color:var(--muted)}
+.v10-safe{border-left:3px solid var(--warn);padding:10px 12px;background:color-mix(in srgb,var(--warn) 7%,transparent);font-size:12px;color:var(--muted)}
+@media(max-width:650px){.v10-welcome-points{grid-template-columns:1fr}.v10-welcome-card{padding:22px}}
+
+/* Always-visible contact access. */
+.v10-contact-fab{
+  position:fixed;left:16px;bottom:16px;z-index:8000;border:1px solid var(--line);
+  background:var(--panel);color:var(--text);border-radius:13px;padding:10px 13px;
+  cursor:pointer;box-shadow:var(--v10-shadow);font-size:12px
+}
+.v10-contact-fab:hover{border-color:var(--accent)}
+.v10-contact-panel{
+  position:fixed;left:16px;bottom:64px;z-index:8001;width:min(350px,calc(100vw - 32px));
+  border:1px solid var(--line);border-radius:18px;background:var(--panel);box-shadow:0 20px 60px rgba(0,0,0,.3);
+  display:none;overflow:hidden
+}
+.v10-contact-panel.open{display:block}
+.v10-contact-head{display:flex;justify-content:space-between;align-items:center;padding:13px 15px;border-bottom:1px solid var(--line)}
+.v10-contact-body{padding:14px}
+.v10-contact-link{
+  display:flex;align-items:center;gap:10px;padding:11px;border:1px solid var(--line);border-radius:11px;
+  color:var(--text);background:var(--panel2);margin-top:8px
+}
+.v10-contact-link:hover{border-color:var(--accent)}
+.v10-contact-link small{display:block;color:var(--muted)}
+.v10-contact-link b{display:block}
+
+/* Lightweight command navigation. */
+.v10-command{
+  position:fixed;inset:0;z-index:9000;background:rgba(3,6,12,.78);
+  display:none;align-items:flex-start;justify-content:center;padding:8vh 16px
+}
+.v10-command.open{display:flex}
+.v10-command-box{width:min(720px,100%);background:var(--panel);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.v10-command-input{width:100%;border:0;border-bottom:1px solid var(--line);outline:0;background:var(--panel);color:var(--text);padding:16px;font-size:16px}
+.v10-command-list{max-height:55vh;overflow:auto;padding:7px}
+.v10-command-item{padding:11px 12px;border-radius:10px;cursor:pointer}
+.v10-command-item:hover{background:var(--panel2)}
+.v10-command-item small{display:block;color:var(--muted);margin-top:2px}
+
+/* V10 AI greeting dock. */
+.v10-ai{
+  position:fixed;right:16px;bottom:16px;z-index:8000;width:min(390px,calc(100vw - 32px));
+  display:none;border:1px solid var(--line);border-radius:18px;background:var(--panel);box-shadow:0 20px 60px rgba(0,0,0,.3);overflow:hidden
+}
+.v10-ai.open{display:block}
+.v10-ai-head{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-bottom:1px solid var(--line)}
+.v10-ai-body{max-height:300px;overflow:auto;padding:13px}
+.v10-ai-msg{padding:9px 11px;border-radius:11px;background:var(--panel2);margin-bottom:8px;font-size:13px;line-height:1.5}
+.v10-ai-msg.user{border-left:2px solid var(--accent)}
+.v10-ai-form{display:flex;gap:7px;padding:9px;border-top:1px solid var(--line)}
+.v10-ai-form input{flex:1;min-width:0;border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:10px;padding:9px}
+.v10-ai-form button{border:0;background:var(--accent);color:#071018;border-radius:10px;padding:9px 12px;font-weight:800}
+
+/* Robust SVG graph — replaces the fragile canvas implementation visually. */
+.v10-graph{border:1px solid var(--line);border-radius:18px;background:var(--panel);overflow:hidden}
+.v10-graph-toolbar{display:grid;grid-template-columns:1fr 1fr 1.25fr auto auto;gap:8px;padding:12px;border-bottom:1px solid var(--line)}
+.v10-graph-toolbar input{min-width:0;border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:10px;padding:10px}
+.v10-graph-stage{position:relative;height:540px;background:var(--bg2);overflow:hidden;touch-action:none}
+#v10GraphSvg{width:100%;height:100%;display:block;cursor:grab}
+#v10GraphSvg.dragging{cursor:grabbing}
+.v10-graph-edge{stroke:var(--accent);stroke-width:2;opacity:.78}
+.v10-graph-edge-label{fill:var(--muted);font-size:12px;pointer-events:none}
+.v10-graph-node{cursor:grab}
+.v10-graph-node circle{fill:#6558dc;stroke:rgba(255,255,255,.72);stroke-width:2}
+.v10-graph-node text{fill:#fff;font-size:12px;font-weight:700;pointer-events:none;text-anchor:middle}
+.v10-graph-empty{position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);pointer-events:none;text-align:center;padding:20px}
+.v10-graph-stats{display:flex;gap:8px;flex-wrap:wrap;padding:9px 12px;color:var(--muted);font-size:12px;border-top:1px solid var(--line)}
+@media(max-width:800px){.v10-graph-toolbar{grid-template-columns:1fr 1fr}.v10-graph-toolbar input:nth-child(3){grid-column:1/-1}.v10-graph-stage{height:470px}}
+@media(max-width:520px){.v10-graph-toolbar{grid-template-columns:1fr}.v10-graph-stage{height:410px}}
+
+/* V10 quick diagnostics. */
+.v10-health{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin:18px 0}
+.v10-health-card{border:1px solid var(--line);border-radius:13px;padding:12px;background:var(--panel2)}
+.v10-health-card b{display:block}
+.v10-health-card span{font-size:12px;color:var(--muted)}
+.v10-ok{color:var(--ok)}
+@media(max-width:700px){.v10-health{grid-template-columns:1fr 1fr}}
+@media(max-width:430px){.v10-health{grid-template-columns:1fr}}
+
+/* Prevent expensive decorative layers in low mode. */
+html[data-performance="low"] .hero:after,
+html[data-performance="low"] .feedback-card:before{display:none}
+html[data-performance="low"] .card,
+html[data-performance="low"] .tool,
+html[data-performance="low"] .resource,
+html[data-performance="low"] .story,
+html[data-performance="low"] .q,
+html[data-performance="low"] .directory-card,
+html[data-performance="low"] .feedback-card{box-shadow:none!important}
+
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+
+<header>
+  <div class="wrap">
+    <nav>
+      <a class="logo" href="#top"><span>O</span> OSINT Academy</a>
+      <div class="links">
+        <a href="#about">Основы</a><a href="#course">Курс</a><a href="#tools">Инструменты</a><a href="#stories">Истории</a><a href="#labs">Лаборатории</a><a href="#glossary">Словарь</a><a href="#faq">FAQ</a><a href="#directory">Справочник</a><a href="#assistant">AI</a><a href="#graphLab">Граф</a><a href="#quiz">Тест</a><a href="#privacy">Приватность</a><a href="#ethics">Этика и закон</a><a href="#roadmap">Путь</a><a href="#v9hub">Старт</a><a href="#dorklab">Dork Lab</a><a href="#graphLab">Граф V10</a><a href="#books">Книги</a><a href="#cases">Кейсы</a><a href="#v9tools">Web-центр</a><a href="#feedback">Связь</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="wrap">
+    <section class="hero">
+      <div>
+        <span class="badge">Курс с нуля • безопасный OSINT</span>
+        <h1>Учись искать.<br><span class="gradient">Учись проверять.</span></h1>
+        <p class="lead">Практический курс по OSINT — разведке по открытым источникам. От базового поиска и проверки фактов до построения доказательной цепочки.</p>
+        <div class="author-signature" aria-label="Автор сайта"><span class="author-dot"></span><span>By : <strong>Заблудший</strong></span><span class="author-role">Автор OSINT Academy</span></div>
+        <div class="actions">
+          <a class="btn primary" href="#course">Начать обучение</a>
+          <a class="btn" href="#practice">Перейти к практике</a><button class="btn" type="button" onclick="v10OpenAI()">AI-наставник</button><button class="btn" type="button" onclick="v10OpenCommand()">Навигация</button>
+        </div>
+      </div>
+      <div class="terminal" aria-label="Демонстрация рабочего процесса">
+        <div class="dots"><i></i><i></i><i></i></div>
+        <div class="screen">
+          <div><span class="cyan">$</span> osint --workflow</div><br>
+          <div><span class="yellow">01</span> Определи вопрос</div>
+          <div><span class="yellow">02</span> Найди первичные источники</div>
+          <div><span class="yellow">03</span> Сопоставь данные</div>
+          <div><span class="yellow">04</span> Проверь дату и контекст</div>
+          <div><span class="yellow">05</span> Зафиксируй доказательства</div>
+          <br><div><span class="green">✓</span> Conclusion: evidence-based</div>
+        </div>
+      </div>
+    </section>
+
+
+    <section id="v9hub" class="v9-hub" aria-label="Панель старта V9">
+      <article class="v9-hub-card">
+        <div class="num">V10 / CONTROL CENTER</div>
+        <h2 style="margin:7px 0 4px">Центр ученика</h2>
+        <p class="lead" style="font-size:14px">Быстрый маршрут по академии: теория → поиск → проверка → практика → отчёт.</p>
+        <div class="v9-statrow"><span>Прогресс академии</span><b id="v9ProgressText">0%</b></div>
+        <div class="v9-meter"><span id="v9ProgressBar"></span></div>
+        <div class="v9-hub-list">
+          <a href="#course">📚 Курс</a>
+          <a href="#dorklab">⌕ Google Dork Lab</a>
+          <a href="#practice">⚗ Практика</a>
+          <a href="#books">▤ Книги</a>
+          <a href="#v9tools">◉ Web-центр</a>
+          <a href="#assistant">AI-наставник</a>
+        </div>
+      </article>
+      <article class="v9-hub-card">
+        <div class="num">AI / НАСТАВНИК</div>
+        <h2 style="margin:7px 0 4px">Первый маршрут</h2>
+        <p style="color:var(--muted);font-size:14px">Не начинай с десятков инструментов. Сначала сформулируй вопрос, затем выбери источники и только после этого запускай поиск.</p>
+        <div class="v9-legal"><b>Правило V9:</b> работаем с законно доступной информацией. Не ищем пароли, приватные адреса, утечки, закрытые аккаунты и не помогаем преследовать людей.</div>
+        <div class="actions" style="margin-top:15px">
+          <button class="btn primary" type="button" onclick="v9OpenAI()">Открыть AI-наставника</button>
+          <button class="btn" type="button" onclick="v9OpenCommand()">Командный поиск <span class="v9-kbd">Ctrl K</span></button>
+        </div>
+      </article>
+    </section>
+    <div class="v10-health" aria-label="Состояние сайта">
+      <div class="v10-health-card"><b class="v10-ok">● UI</b><span>стабильный интерфейс</span></div>
+      <div class="v10-health-card"><b class="v10-ok">● Graph</b><span>SVG-движок V10</span></div>
+      <div class="v10-health-card"><b class="v10-ok">● AI</b><span>локальный наставник</span></div>
+      <div class="v10-health-card"><b class="v10-ok">● Data</b><span>локальное хранение</span></div>
+    </div>
+
+
+    <section id="dorklab">
+      <div class="section-head">
+        <h2>Google Dork Lab</h2>
+        <p>Конструктор поисковых запросов для открытых и учебных источников. Все запросы формируются в браузере.</p>
+      </div>
+      <div class="v9-dork">
+        <div class="v9-dork-main">
+          <label for="dorkTopic"><b>Тема / ключевые слова</b></label>
+          <input id="dorkTopic" class="v9-input" style="width:100%;margin-top:7px" placeholder="например: climate report">
+          <div class="v9-dork-chips">
+            <button class="v9-chip" onclick="v9DorkOp('site:')">site:</button>
+            <button class="v9-chip" onclick="v9DorkOp('filetype:pdf')">filetype:pdf</button>
+            <button class="v9-chip" onclick="v9DorkOp('intitle:')">intitle:</button>
+            <button class="v9-chip" onclick="v9DorkOp('inurl:')">inurl:</button>
+            <button class="v9-chip" onclick="v9DorkOp('exact')">"точная фраза"</button>
+            <button class="v9-chip" onclick="v9DorkOp('-')">исключить слово</button>
+          </div>
+          <textarea id="dorkQuery" placeholder="Собери запрос вручную или нажми на операторы выше."></textarea>
+          <div class="actions">
+            <button class="btn primary" type="button" onclick="v9BuildDork()">Собрать запрос</button>
+            <button class="btn" type="button" onclick="v9CopyDork()">Копировать</button>
+            <button class="btn" type="button" onclick="v9SearchDork()">Открыть поиск</button>
+          </div>
+          <div id="dorkOutput" class="v9-output">Готовый запрос появится здесь.</div>
+        </div>
+        <aside class="v9-dork-side">
+          <b>Безопасные шаблоны</b>
+          <ul style="color:var(--muted);font-size:13px">
+            <li><code>site:example.org filetype:pdf report</code></li>
+            <li><code>intitle:"annual report" 2025</code></li>
+            <li><code>site:gov.example "public report"</code></li>
+            <li><code>"точная фраза" -слово</code></li>
+          </ul>
+          <p style="font-size:12px;color:var(--muted)">Не используй dork-запросы для поиска паролей, ключей, приватных документов или обхода ограничений доступа.</p>
+        </aside>
+      </div>
+    </section>
+
+    <section id="v9tools">
+      <div class="section-head">
+        <h2>Web-центр OSINT V9</h2>
+        <p>Расширенный каталог открытых ресурсов. Перед использованием проверяй актуальность, условия и ограничения конкретного сервиса.</p>
+      </div>
+      <div class="v9-filterbar">
+        <input id="v9ToolSearch" placeholder="Поиск инструмента или категории…" oninput="v9RenderTools()">
+        <select id="v9ToolCategory" onchange="v9RenderTools()">
+          <option value="all">Все категории</option><option value="search">Поиск</option><option value="archive">Архивы</option>
+          <option value="image">Изображения</option><option value="geo">Карты и гео</option><option value="domain">Домены</option>
+          <option value="company">Организации</option><option value="data">Данные</option><option value="verify">Верификация</option>
+        </select>
+      </div>
+      <div id="v9ToolsGrid" class="v9-grid"></div>
+    </section>
+
+    <section id="cases">
+      <div class="section-head">
+        <h2>Практические кейсы V9</h2>
+        <p>Синтетические сценарии: реальные частные лица не используются. Цель — тренировать методику, а не собирать персональные досье.</p>
+      </div>
+      <div class="v9-lab">
+        <div class="num">КЕЙС 01 / ВЕРИФИКАЦИЯ</div>
+        <h3>«Старое фото выдали за новое»</h3>
+        <p style="color:var(--muted)">Пост утверждает, что изображение снято сегодня. Вы нашли такую же картинку в архивном материале.</p>
+        <div class="v9-lab-row">
+          <button class="v9-choice" onclick="v9Case(this,false)">Сразу считать пост ложным</button>
+          <button class="v9-choice" onclick="v9Case(this,true)">Сравнить дату первичного появления, контекст и независимые источники</button>
+          <button class="v9-choice" onclick="v9Case(this,false)">Довериться подписи автора</button>
+        </div>
+        <div class="v9-result" id="caseResult1"></div>
+      </div>
+      <div class="v9-lab">
+        <div class="num">КЕЙС 02 / ГЕОЛОКАЦИЯ</div>
+        <h3>«Где сделан снимок?»</h3>
+        <p style="color:var(--muted)">На изображении видны дорога, вывеска и рельеф. Что делать первым?</p>
+        <div class="v9-lab-row">
+          <button class="v9-choice" onclick="v9Case2(this,false)">Сразу назвать город по общему впечатлению</button>
+          <button class="v9-choice" onclick="v9Case2(this,true)">Выделить уникальные признаки, проверить карту/спутник и подтвердить несколькими признаками</button>
+          <button class="v9-choice" onclick="v9Case2(this,false)">Искать личные данные людей в кадре</button>
+        </div>
+        <div class="v9-result" id="caseResult2"></div>
+      </div>
+      <div class="v9-lab">
+        <div class="num">КЕЙС 03 / ДОКУМЕНТ</div>
+        <h3>«PDF выглядит официально»</h3>
+        <p style="color:var(--muted)">Документ распространяется в соцсетях. Какие проверки разумнее?</p>
+        <div class="v9-lab-row">
+          <button class="v9-choice" onclick="v9Case3(this,true)">Найти официальный источник, проверить автора, дату, реквизиты и совпадение текста</button>
+          <button class="v9-choice" onclick="v9Case3(this,false)">Считать PDF доказательством только из-за оформления</button>
+          <button class="v9-choice" onclick="v9Case3(this,false)">Смотреть только имя файла</button>
+        </div>
+        <div class="v9-result" id="caseResult3"></div>
+      </div>
+    </section>
+
+    <section id="books">
+      <div class="section-head">
+        <h2>Книги про OSINT</h2>
+        <p>Ориентир для самостоятельного обучения. Описания — краткие, без воспроизведения защищённого текста.</p>
+      </div>
+      <div class="v9-books">
+        <article class="v9-book">
+          <div class="meta">MICHAEL BAZZELL · 10TH EDITION · 2023</div>
+          <h3>OSINT Techniques: Resources for Searching and Analyzing Online Information</h3>
+          <p>Большой практический справочник по поиску и анализу открытой информации. Издание 2023 года насчитывает 542 страницы.</p>
+          <ul><li>поисковые стратегии и источники;</li><li>работа с онлайн-ресурсами;</li><li>организация исследовательского процесса;</li><li>самостоятельность исследователя и собственные рабочие инструменты.</li></ul>
+          <a class="btn" href="https://books.google.com/books/about/OSINT_Techniques.html?id=-XuhzwEACAAJ" target="_blank" rel="noopener">Библиографическая карточка</a>
+        </article>
+        <article class="v9-book">
+          <div class="meta">BELLINGCAT · METHODOLOGY / GUIDES</div>
+          <h3>Bellingcat: практические руководства вместо одной «главной книги»</h3>
+          <p>У Bellingcat сильная учебная база по верификации, поиску, геолокации, архивированию и работе с визуальными материалами. Их Toolkit структурирует инструменты по задачам и указывает ограничения.</p>
+          <ul><li>верификация фото и видео;</li><li>карты, спутниковые данные и геолокация;</li><li>архивирование материалов;</li><li>критическое мышление и проверка контекста.</li></ul>
+          <a class="btn" href="https://www.bellingcat.com/resources/2024/09/24/bellingcat-online-investigations-toolkit/" target="_blank" rel="noopener">Открыть Toolkit</a>
+        </article>
+        <article class="v9-book">
+          <div class="meta">КАК ЧИТАТЬ OSINT-ЛИТЕРАТУРУ</div>
+          <h3>Не учи инструменты наизусть</h3>
+          <p>Сервисы меняются: сайт закрывается, интерфейс обновляется, бесплатная функция становится платной. Поэтому ценнее понимать метод: вопрос → источник → pivot → проверка → доказательство.</p>
+          <ul><li>сохраняй дату и источник;</li><li>проверяй ограничения инструмента;</li><li>сравнивай несколько независимых источников;</li><li>обновляй знания по документации.</li></ul>
+        </article>
+        <article class="v9-book">
+          <div class="meta">КНИЖНАЯ ПОЛКА</div>
+          <h3>Что изучать после базы</h3>
+          <p>После первого курса переходи к темам цифровой верификации, геолокации, архивирования, анализа документов и информационной безопасности.</p>
+          <div class="v9-legal">OSINT Academy не продаёт книги и не размещает пиратские копии. Здесь только учебные описания и ссылки на легальные/официальные страницы.</div>
+        </article>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="section-head">
+        <h2>Что такое OSINT?</h2>
+        <p>OSINT = Open Source Intelligence — анализ законно доступной информации из открытых источников.</p>
+      </div>
+      <div class="grid">
+        <article class="card"><div class="num">01 / ПОИСК</div><h3>Найти</h3><p>Формулировать запросы, использовать операторы поиска, искать первоисточники и архивные версии страниц.</p></article>
+        <article class="card"><div class="num">02 / ПРОВЕРКА</div><h3>Сопоставить</h3><p>Сравнивать несколько независимых источников, даты, авторов, документы и контекст.</p></article>
+        <article class="card"><div class="num">03 / ВЫВОД</div><h3>Доказать</h3><p>Отделять факт от предположения и ясно показывать, на каких данных основан вывод.</p></article>
+      </div>
+    
+      <div class="stats">
+        <div class="stat"><b>24</b><span>модуля курса</span></div>
+        <div class="stat"><b>20+</b><span>публичных ресурсов</span></div>
+        <div class="stat"><b>4</b><span>интерактивные зоны</span></div>
+        <div class="stat"><b>15</b><span>вопросов в тесте</span></div>
+      </div>
+    </section>
+
+    
+<section id="roadmap">
+  <div class="section-head">
+    <h2>Как пройти сайт и реально научиться</h2>
+    <p>Не пытайся запомнить сотни сервисов. Сначала научись мыслить, затем искать, проверять и только потом ускоряй работу инструментами.</p>
+  </div>
+  <div class="roadmap">
+    <div class="step"><div class="num">01 · НОВИЧОК</div><h3>Понимание</h3><p>Источник, факт, гипотеза, зацепка, контекст, дата.</p></div>
+    <div class="step"><div class="num">02 · ЛЮБИТЕЛЬ</div><h3>Поиск</h3><p>Операторы, архивы, изображения, документы, карты и pivoting.</p></div>
+    <div class="step"><div class="num">03 · УВЕРЕННЫЙ</div><h3>Проверка</h3><p>Независимые источники, хронология, геолокация и оценка уверенности.</p></div>
+    <div class="step"><div class="num">04 · ИССЛЕДОВАТЕЛЬ</div><h3>Отчёт</h3><p>Воспроизводимый журнал, ограничения, доказательства и аккуратные выводы.</p></div>
+  </div>
+</section>
+
+<section id="course">
+      <div class="section-head"><h2>Большой учебный курс</h2><p>24 модуля: от мышления и поиска до верификации, геолокации, документов, данных, отчётов и воспроизводимости.</p></div>
+      <div class="course">
+        <aside class="sidebar" id="lessonList"></aside>
+        <article class="card lesson-panel" id="lessonPanel"></article>
+      </div>
+    </section>
+
+
+
+    <section id="tools">
+      <div class="section-head"><h2>Большой каталог инструментов</h2><p>Публичные ресурсы для поиска, архивов, изображений, карт, документов и анализа данных.</p></div>
+      <div class="tool-grid">
+        <article class="tool"><span class="tag">SEARCH</span><h3>Google</h3><p>Веб-поиск и операторы.</p><a class="tool-link" href="https://www.google.com/" target="_blank" rel="noopener">Открыть →</a></article>
+        <article class="tool"><span class="tag">SEARCH</span><h3>Bing</h3><p>Альтернативная выдача и изображения.</p><a class="tool-link" href="https://www.bing.com/" target="_blank" rel="noopener">Открыть →</a></article>
+        <article class="tool"><span class="tag">SEARCH</span><h3>DuckDuckGo</h3><p>Дополнительный поисковый источник.</p><a class="tool-link" href="https://duckduckgo.com/" target="_blank" rel="noopener">Открыть →</a></article>
+        <article class="tool"><span class="tag">TOOLKIT</span><h3>Bellingcat Toolkit</h3><p>Каталог OSINT-инструментов по категориям.</p><a class="tool-link" href="https://bellingcat.gitbook.io/toolkit" target="_blank" rel="noopener">Открыть →</a></article>
+        <article class="tool"><span class="tag">ARCHIVE</span><h3>Wayback Machine</h3><p>История публичных веб-страниц.</p><a class="tool-link" href="https://web.archive.org/" target="_blank" rel="noopener">Открыть →</a></article>
+        <article class="tool"><span class="tag">ARCHIVE</span><h3>Archive.today</h3><p>Дополнительный веб-архив.</p><a class="tool-link" href="https://archive.today/" target="_blank" rel="noopener">Открыть →</a></article>
+        <article class="tool"><span class="tag">IMAGE</span><h3>Google Lens</h3><p>Поиск и сравнение изображений.</p><a class="tool-link" href="https://lens.google.com/" target="_blank" rel="noopener">Открыть →</a></article>
+        <article class="tool"><span class="tag">IMAGE</span><h3>Bing Visual Search</h3><p>Альтернативный визуальный поиск.</p><a class="tool-link" href="https://www.bing.com/visualsearch" target="_blank" rel="noopener">Открыть →</a></article>
+        <article class="tool"><span class="tag">VIDEO</span><h3>InVID / WeVerify</h3><p>Учебные инструменты проверки видео.</p><a class="tool-link" href="https://www.invid-project.eu/tools-and-services/invid-verification-plugin/" target="_blank" rel="noopener">Открыть →</a></article>
+        <article class="tool"><span class="tag">MAPS</span><h3>OpenStreetMap</h3><p>Открытая карта и объекты.</p><a class="tool-link" href="https://www.openstreetmap.org/" target="_blank" rel="noopener">Открыть →</a></article>
+        <article class="tool"><span class="tag">MAPS</span><h3>Google Maps</h3><p>Карты, спутник и публичные фото.</p><a class="tool-link" href="https://maps.google.com/" target="_blank" rel="noopener">Открыть →</a></article>
+        <article class="tool"><span class="tag">GEO</span><h3>GeoHints</h3><p>Учебные подсказки по геолокации.</p><a class="tool-link" href="https://geohints.com/" target="_blank" rel="noopener">Открыть →</a></article>
+        <article class="tool"><span class="tag">TIME</span><h3>SunCalc</h3><p>Положение Солнца и анализ теней.</p><a class="tool-link" href="https://www.suncalc.org/" target="_blank" rel="noopener">Открыть →</a></article>
+        <article class="tool"><span class="tag">GEO</span><h3>Mapillary</h3><p>Публичные изображения улиц.</p><a class="tool-link" href="https://www.mapillary.com/" target="_blank" rel="noopener">Открыть →</a></article>
+        <article class="tool"><span class="tag">DOMAIN</span><h3>crt.sh</h3><p>Публичные записи сертификатов.</p><a class="tool-link" href="https://crt.sh/" target="_blank" rel="noopener">Открыть →</a></article>
+        <article class="tool"><span class="tag">WEB</span><h3>urlscan.io</h3><p>Публичный технический контекст веб-страниц.</p><a class="tool-link" href="https://urlscan.io/" target="_blank" rel="noopener">Открыть →</a></article>
+        <article class="tool"><span class="tag">DOMAIN</span><h3>ICANN Lookup</h3><p>Официальный поиск информации о доменах.</p><a class="tool-link" href="https://lookup.icann.org/" target="_blank" rel="noopener">Открыть →</a></article>
+        <article class="tool"><span class="tag">COMPANIES</span><h3>OpenCorporates</h3><p>Открытые сведения о компаниях.</p><a class="tool-link" href="https://opencorporates.com/" target="_blank" rel="noopener">Открыть →</a></article>
+        <article class="tool"><span class="tag">FINANCE</span><h3>SEC EDGAR</h3><p>Официальная база документов публичных компаний США.</p><a class="tool-link" href="https://www.sec.gov/edgar" target="_blank" rel="noopener">Открыть →</a></article>
+        <article class="tool"><span class="tag">DATA</span><h3>Data.gov</h3><p>Государственные открытые наборы данных США.</p><a class="tool-link" href="https://www.data.gov/" target="_blank" rel="noopener">Открыть →</a></article>
+        <article class="tool"><span class="tag">ENVIRONMENT</span><h3>Global Forest Watch</h3><p>Открытые данные о лесах и изменениях территории.</p><a class="tool-link" href="https://www.globalforestwatch.org/" target="_blank" rel="noopener">Открыть →</a></article>
+        <article class="tool"><span class="tag">METADATA</span><h3>ExifTool</h3><p>Локальный анализ метаданных файлов.</p><a class="tool-link" href="https://exiftool.org/" target="_blank" rel="noopener">Открыть →</a></article>
+        <article class="tool"><span class="tag">GUIDES</span><h3>Bellingcat Resources</h3><p>Практические материалы и расследования.</p><a class="tool-link" href="https://www.bellingcat.com/resources/" target="_blank" rel="noopener">Открыть →</a></article>
+        <article class="tool"><span class="tag">CODE</span><h3>Research Notebooks</h3><p>Открытые notebooks для исследователей.</p><a class="tool-link" href="https://github.com/bellingcat/open-source-research-notebooks" target="_blank" rel="noopener">Открыть →</a></article>
+      </div>
+      <div class="callout"><b>Важно:</b> инструмент даёт результат, но не гарантирует истину. Проверяй происхождение данных, дату, контекст и независимые подтверждения.</div>
+    </section>
+
+    <section id="stories">
+      <div class="section-head"><h2>Истории и учебные расследования</h2><p>Все примеры ниже построены вокруг безопасных публичных объектов, а не частных лиц.</p></div>
+      <div class="timeline">
+        <article class="story">
+          <h3>История 01 — исчезнувшая страница</h3>
+          <p><b>Задача:</b> понять, когда организация впервые опубликовала описание проекта.</p>
+          <p><b>Зацепка:</b> старая цитата встречается в нескольких статьях.</p>
+          <p><b>Ход:</b> точная фраза → поиск первичного сайта → архивные копии → сравнение дат → поиск более ранней версии документа.</p>
+          <div class="answer"><b>Урок:</b> копии текста помогают найти первоисточник, но не заменяют его.</div>
+        </article>
+        <article class="story">
+          <h3>История 02 — фотография с неизвестным местом</h3>
+          <p><b>Задача:</b> определить публичную площадь по фотографии.</p>
+          <p><b>Зацепки:</b> вывеска, форма фонаря, дорога, здание на заднем плане.</p>
+          <p><b>Ход:</b> OCR вывески → поиск названия → карта → сравнение улиц → Street View → проверка второго независимого признака.</p>
+          <div class="answer"><b>Урок:</b> геолокация сильнее, когда несколько независимых деталей указывают на одно место.</div>
+        </article>
+        <article class="story">
+          <h3>История 03 — документ без контекста</h3>
+          <p><b>Задача:</b> проверить, относится ли PDF к заявленной организации.</p>
+          <p><b>Зацепки:</b> номер документа, дата, название отдела.</p>
+          <p><b>Ход:</b> поиск номера → официальный сайт → другие документы той же серии → сравнение формата → проверка даты.</p>
+          <div class="answer"><b>Урок:</b> один красивый PDF ничего не доказывает без происхождения и контекста.</div>
+        </article>
+      </div>
+    </section>
+
+    <section id="search-lab">
+      <div class="section-head"><h2>Лаборатория запросов</h2><p>Небольшой офлайн-тренажёр: выбирай шаблон и учись превращать зацепку в запрос.</p></div>
+      <div class="card">
+        <div class="search-box">
+          <input id="queryInput" placeholder="Например: точная фраза, название документа, домен">
+          <button class="btn primary" id="queryBtn" type="button">Разобрать</button>
+        </div>
+        <div class="search-results" id="queryResults"></div>
+      </div>
+    </section>
+
+
+    <section id="labs">
+      <div class="section-head"><h2>Интерактивные лаборатории</h2><p>Все упражнения работают локально в браузере.</p></div>
+      <div class="lab-grid">
+        <div class="card">
+          <h3>Конструктор запроса</h3>
+          <div class="field"><label for="queryInput">Зацепка</label><input id="queryInput" placeholder="Например: название проекта 2026"></div>
+          <div class="actions"><button class="btn primary" id="queryBtn" type="button">Построить</button><button class="btn" id="clearQuery" type="button">Очистить</button></div>
+          <div class="search-results" id="queryResults"></div>
+        </div>
+        <div class="card">
+          <h3>Проверка источника</h3>
+          <div class="field"><label>Название</label><input id="sourceTitle" placeholder="Официальный документ"></div>
+          <div class="field"><label>Дата</label><input id="sourceDate" placeholder="2026-09-13"></div>
+          <div class="field"><label>Происхождение</label><select id="sourceOrigin"><option value="">Выбери</option><option>Первичный источник</option><option>Вторичный источник</option><option>Архивная копия</option><option>Публичная публикация</option></select></div>
+          <div class="actions"><button class="btn primary" id="checkSource" type="button">Проверить</button></div>
+          <div class="search-results" id="sourceResult"></div>
+        </div>
+      </div>
+      <div class="card" style="margin-top:15px">
+        <h3>Pivot-тренажёр</h3><p class="small">Выбери тип найденной зацепки и придумай следующий шаг.</p>
+        <div class="lab-grid">
+          <div class="field"><label>Тип</label><select id="clueType"><option value="phrase">Точная фраза</option><option value="document">Номер документа</option><option value="domain">Домен</option><option value="place">Название места</option><option value="image">Изображение</option><option value="date">Дата</option></select></div>
+          <div class="field"><label>Значение</label><input id="clueValue" placeholder="Твоя зацепка"></div>
+        </div>
+        <div class="actions"><button class="btn primary" id="pivotBtn" type="button">Получить план</button></div>
+        <div class="search-results" id="pivotResult"></div>
+      </div>
+    </section>
+
+    <section id="glossary">
+      <div class="section-head"><h2>Словарь терминов</h2><p>Короткие определения без сложной терминологии.</p></div>
+      <div class="grid">
+        <article class="card"><b>OSINT</b><p>Систематический анализ открытой информации.</p></article>
+        <article class="card"><b>Pivot</b><p>Переход от одной зацепки к следующей.</p></article>
+        <article class="card"><b>Breadcrumb</b><p>Маленькая деталь, ведущая к новому источнику.</p></article>
+        <article class="card"><b>Primary source</b><p>Первичный источник, непосредственно связанный с фактом.</p></article>
+        <article class="card"><b>Verification</b><p>Проверка утверждения, источника и контекста.</p></article>
+        <article class="card"><b>OCR</b><p>Распознавание текста на изображении.</p></article>
+        <article class="card"><b>Metadata</b><p>Дополнительные сведения о файле или его свойствах.</p></article>
+        <article class="card"><b>Geolocation</b><p>Определение места по открытым признакам.</p></article>
+        <article class="card"><b>Chronolocation</b><p>Оценка времени по визуальным и контекстным признакам.</p></article>
+        <article class="card"><b>False positive</b><p>Ошибочное совпадение, которое выглядит правильным.</p></article>
+        <article class="card"><b>Confidence</b><p>Оценка уверенности в выводе.</p></article>
+        <article class="card"><b>Attribution</b><p>Обоснование связи действия с источником или объектом.</p></article>
+      </div>
+    </section>
+
+    <section id="matrix">
+      <div class="section-head"><h2>Матрица силы доказательства</h2><p>Удобная модель для проверки собственного вывода.</p></div>
+      <div style="overflow:auto">
+        <table class="matrix">
+          <tr><th>Материал</th><th>Что подтверждает</th><th>Ограничение</th></tr>
+          <tr><td>Один пост</td><td>Наличие утверждения</td><td>Может быть ошибочным или без контекста.</td></tr>
+          <tr><td>Скриншот</td><td>След публикации</td><td>Может быть обрезан или изменён.</td></tr>
+          <tr><td>Архивная копия</td><td>Историческую версию страницы</td><td>Не доказывает истинность содержания.</td></tr>
+          <tr><td>Первичный документ</td><td>Конкретный факт в документе</td><td>Нужно проверить происхождение.</td></tr>
+          <tr><td>Два независимых источника</td><td>Более сильное подтверждение</td><td>Нужно доказать независимость.</td></tr>
+          <tr><td>Несколько независимых признаков</td><td>Сильную совокупность свидетельств</td><td>Остаются ограничения и возможные ошибки.</td></tr>
+        </table>
+      </div>
+    </section>
+
+    <section id="flashcards">
+      <div class="section-head"><h2>Карточки для запоминания</h2><p>Нажимай «Следующая».</p></div>
+      <div class="flashcard"><div><div class="term" id="flashTerm">Pivot</div><p class="definition" id="flashDef">Переход от одной зацепки к новой.</p></div></div>
+      <div class="actions"><button class="btn primary" id="nextCard" type="button">Следующая</button><button class="btn" id="shuffleCards" type="button">Перемешать</button></div>
+    </section>
+
+    <section id="practice">
+      <div class="section-head"><h2>Практика: OSINT-процесс</h2><p>Тренируй метод, а не «магические запросы».</p></div>
+      <div class="steps">
+        <div class="step"><div><b>Поставь вопрос.</b><br><span>Не «найди всё», а, например: «Когда опубликован документ и кто его выпустил?»</span></div></div>
+        <div class="step"><div><b>Собери исходные данные.</b><br><span>Запиши известные названия, даты, имена организаций и точные фразы.</span></div></div>
+        <div class="step"><div><b>Ищи шире, затем уже.</b><br><span>Начни с обычного поиска и постепенно добавляй точные слова, кавычки и ограничения по сайту.</span></div></div>
+        <div class="step"><div><b>Проверь независимость.</b><br><span>Пять сайтов могут копировать один и тот же текст. Это не пять независимых подтверждений.</span></div></div>
+        <div class="step"><div><b>Сохрани доказательства.</b><br><span>Фиксируй ссылку, дату доступа, цитируемый фрагмент и объяснение, почему источник релевантен.</span></div></div>
+      </div>
+
+      <div class="section-head" style="margin-top:45px"><h2>Чек-лист исследователя</h2></div>
+      <div class="checklist">
+        <label class="check"><input type="checkbox"> Я сформулировал конкретный вопрос.</label>
+        <label class="check"><input type="checkbox"> Я нашёл хотя бы один первичный источник.</label>
+        <label class="check"><input type="checkbox"> Я проверил дату публикации и контекст.</label>
+        <label class="check"><input type="checkbox"> Я не выдаю предположение за установленный факт.</label>
+        <label class="check"><input type="checkbox"> Я не собираю и не распространяю чужие чувствительные данные.</label>
+      </div>
+
+      <div class="callout danger"><b>Граница курса:</b> OSINT не означает слежку за людьми. Не используй навыки для доксинга, преследования, взлома аккаунтов, поиска закрытых персональных данных или обхода ограничений доступа. Для обучения используй собственные данные, публичные организации, исторические события и учебные примеры.</div>
+    </section>
+
+    
+<section id="privacy">
+  <div class="section-head">
+    <h2>Приватность и анонимизация</h2>
+    <p>Этот раздел про защиту <b>себя</b> во время безопасного обучения и про уважение чужой приватности. Это не инструкция по сокрытию незаконной активности.</p>
+  </div>
+  <div class="grid">
+    <article class="card">
+      <h3>Что такое анонимизация</h3>
+      <p>В широком смысле — уменьшение количества данных, по которым человека или исследовательскую сессию можно связать с конкретной личностью.</p>
+      <p><b>Важно:</b> абсолютной анонимности в интернете гарантировать нельзя.</p>
+    </article>
+    <article class="card">
+      <h3>Безопасная база</h3>
+      <ul>
+        <li>не публикуй свой адрес, школу, номер телефона и пароли;</li>
+        <li>используй уникальные пароли и многофакторную защиту;</li>
+        <li>проверяй разрешения приложений;</li>
+        <li>разделяй личные и учебные материалы;</li>
+        <li>не загружай чувствительные файлы в неизвестные сервисы.</li>
+      </ul>
+    </article>
+    <article class="card">
+      <h3>Что проверять перед публикацией</h3>
+      <ul>
+        <li>Есть ли в скриншоте имя, номер или адрес?</li>
+        <li>Видны ли лица людей, которые не являются частью исследования?</li>
+        <li>Не раскрывает ли геолокация частный дом?</li>
+        <li>Нужна ли эта деталь вообще для вывода?</li>
+      </ul>
+    </article>
+  </div>
+  <div class="callout"><b>Принцип минимизации:</b> собирай только то, что необходимо для учебного или общественно значимого вопроса. Публичность информации сама по себе не означает, что её нужно распространять.</div>
+</section>
+
+<section id="ethics">
+  <div class="section-head">
+    <h2>Законность, источники и границы</h2>
+    <p>OSINT — это не «всё, что можно найти в интернете». Важны способ получения, цель, правила сервиса, местное законодательство и возможный вред.</p>
+  </div>
+  <div class="grid">
+    <article class="card">
+      <h3>Обычно безопасная учебная зона</h3>
+      <ul>
+        <li>официальные сайты и публичные документы;</li>
+        <li>публичные государственные реестры, где доступ разрешён;</li>
+        <li>веб-архивы;</li>
+        <li>публичные карты и спутниковые данные;</li>
+        <li>публичные публикации организаций;</li>
+        <li>исторические и научные материалы.</li>
+      </ul>
+    </article>
+    <article class="card">
+      <h3>Зона осторожности</h3>
+      <ul>
+        <li>персональные данные обычных людей;</li>
+        <li>социальные сети и контент с несовершеннолетними;</li>
+        <li>геолокация частных лиц;</li>
+        <li>автоматизированный сбор большого объёма данных;</li>
+        <li>данные с неясным происхождением.</li>
+      </ul>
+    </article>
+    <article class="card">
+      <h3>Нельзя превращать OSINT во взлом</h3>
+      <ul>
+        <li>не обходи авторизацию;</li>
+        <li>не подбирай пароли;</li>
+        <li>не ищи или не используй украденные базы;</li>
+        <li>не обходи технические ограничения доступа;</li>
+        <li>не преследуй и не деанонимизируй людей ради любопытства.</li>
+      </ul>
+    </article>
+  </div>
+  <div class="callout"><b>Юридическая оговорка:</b> правила отличаются по странам и обстоятельствам. Сайт обучает методологии, а не заменяет юридическую консультацию.</div>
+</section>
+
+<section id="source-hygiene">
+  <div class="section-head">
+    <h2>Гигиена источников</h2>
+    <p>Профессиональная привычка: любой важный вывод должен быть воспроизводимым.</p>
+  </div>
+  <div class="checklist">
+    <label><input type="checkbox"> Я записал точный URL или название источника.</label>
+    <label><input type="checkbox"> Я отметил дату и время проверки.</label>
+    <label><input type="checkbox"> Я отличил факт от своей гипотезы.</label>
+    <label><input type="checkbox"> Я проверил контекст материала.</label>
+    <label><input type="checkbox"> Я попытался найти независимое подтверждение.</label>
+    <label><input type="checkbox"> Я проверил, не является ли результат копией одного источника.</label>
+    <label><input type="checkbox"> Я не собираю лишние персональные данные.</label>
+    <label><input type="checkbox"> Я могу объяснить другому человеку, как получил вывод.</label>
+  </div>
+</section>
+
+<section id="practice-path">
+  <div class="section-head">
+    <h2>30-дневная практика для новичка</h2>
+    <p>Работай только с безопасными учебными объектами: организациями, публичными документами, историческими событиями и открытыми изображениями.</p>
+  </div>
+  <div class="timeline">
+    <div class="story"><b>Дни 1–3</b><p>Научись отличать факт, гипотезу, источник и зацепку.</p></div>
+    <div class="story"><b>Дни 4–7</b><p>Отработай точные фразы, site:, filetype:, даты и исключения.</p></div>
+    <div class="story"><b>Дни 8–11</b><p>Тренируй архивы: сравнивай старые и новые версии публичных страниц.</p></div>
+    <div class="story"><b>Дни 12–15</b><p>Возьми 10 публичных изображений и ищи оригинальный контекст.</p></div>
+    <div class="story"><b>Дни 16–19</b><p>Тренируй карты: дороги, перекрёстки, здания, рельеф.</p></div>
+    <div class="story"><b>Дни 20–23</b><p>Разбирай публичный PDF: номер, дата, автор, организация, ссылки.</p></div>
+    <div class="story"><b>Дни 24–27</b><p>Строй хронологию из нескольких источников.</p></div>
+    <div class="story"><b>Дни 28–30</b><p>Напиши один короткий воспроизводимый отчёт с ограничениями и уровнем уверенности.</p></div>
+  </div>
+</section>
+
+
+<section id="resources">
+  <div class="section-head"><h2>Учебные ресурсы</h2><p>Материалы, которые стоит изучать после прохождения базовых модулей.</p></div>
+  <div class="resource-list">
+    <div class="resource"><h3>Bellingcat Toolkit</h3><p>Каталог инструментов с описаниями, ограничениями и этическими аспектами.</p><a href="https://bellingcat.gitbook.io/toolkit" target="_blank" rel="noopener">Открыть ресурс →</a></div>
+    <div class="resource"><h3>Bellingcat: Verification</h3><p>Базовый подход к проверке фотографий, видео и утверждений.</p><a href="https://www.bellingcat.com/resources/2021/11/01/a-beginners-guide-to-social-media-verification/" target="_blank" rel="noopener">Открыть руководство →</a></div>
+    <div class="resource"><h3>Bellingcat: First Steps</h3><p>Материал о рабочем процессе, этике, безопасности и сборе данных.</p><a href="https://www.bellingcat.com/resources/2021/11/09/first-steps-to-getting-started-in-open-source-research/" target="_blank" rel="noopener">Открыть руководство →</a></div>
+    <div class="resource"><h3>Bellingcat: Standards</h3><p>Принципы точности, прозрачности, приватности и пропорциональности.</p><a href="https://www.bellingcat.com/about/editorial-standards-practices" target="_blank" rel="noopener">Открыть стандарты →</a></div>
+    <div class="resource"><h3>CISA: Online Privacy</h3><p>Базовые рекомендации по защите персональной информации в интернете.</p><a href="https://www.cisa.gov/resources-tools/resources/online-privacy" target="_blank" rel="noopener">Открыть ресурс →</a></div>
+    <div class="resource"><h3>OpenStreetMap Wiki</h3><p>Документация и справочные материалы по открытым картографическим данным.</p><a href="https://wiki.openstreetmap.org/" target="_blank" rel="noopener">Открыть ресурс →</a></div>
+  </div>
+</section>
+
+
+<section id="directory" class="section">
+  <div class="kicker">OSINT Directory</div>
+  <h2>Справочник открытых источников</h2>
+  <p>Это каталог для легального исследования <b>публичных данных</b>. Для каждого сайта указано, какую задачу он решает. Не вводи в сторонние сервисы чужие персональные данные, пароли, токены или документы.</p>
+
+  <div class="search-tools">
+    <input id="directorySearch" class="tool-filter" placeholder="Поиск: телефон, домен, карта, PDF, архив...">
+    <select id="directoryType">
+      <option value="all">Все категории</option>
+      <option value="search">Поиск</option>
+      <option value="archive">Архивы</option>
+      <option value="domain">Домены</option>
+      <option value="geo">Геолокация</option>
+      <option value="image">Изображения</option>
+      <option value="company">Компании</option>
+      <option value="data">Открытые данные</option>
+      <option value="verify">Проверка</option>
+      <option value="phone">Телефонные номера</option>
+    </select>
+  </div>
+  <div id="directoryGrid" class="directory"></div>
+
+  <div class="callout" style="margin-top:18px">
+    <b>Про поиск по номеру телефона:</b> законные OSINT-подходы — проверять только публично опубликованный номер, например номер организации, магазина, службы или контакт, который владелец сам разместил на официальном сайте. Я не добавляю сервисы для поиска скрытых адресов, деанонимизации частных людей или получения закрытых персональных данных.
+  </div>
+</section>
+
+<section id="faq" class="section">
+  <div class="kicker">FAQ</div>
+  <h2>Частые вопросы по OSINT</h2>
+  <div class="faq-grid">
+    <details class="faq-item" open><summary>Что такое OSINT?</summary><p>OSINT — Open Source Intelligence, то есть сбор и анализ информации из открытых источников. Важная часть — не просто найти сведения, а проверить их, сопоставить и объяснить, откуда взялся вывод.</p></details>
+    <details class="faq-item"><summary>OSINT — это взлом?</summary><p>Нет. OSINT работает с открытыми источниками. Взлом, обход авторизации, подбор паролей и получение закрытых данных относятся к другой области и не являются нормальной основой учебного OSINT.</p></details>
+    <details class="faq-item"><summary>Что такое pivot?</summary><p>Pivot — переход от одной проверенной зацепки к другой. Например: название организации → официальный сайт → документ → дата → архивная версия.</p></details>
+    <details class="faq-item"><summary>Что такое первичный источник?</summary><p>Источник, который находится максимально близко к событию или факту: официальный документ, заявление организации, оригинальная публикация автора, реестр или исходный набор данных.</p></details>
+    <details class="faq-item"><summary>Можно ли верить одному сайту?</summary><p>Для важных выводов лучше иметь независимое подтверждение. Два сайта, которые просто перепечатали один текст, не являются двумя независимыми источниками.</p></details>
+    <details class="faq-item"><summary>Что делать, если источник удалили?</summary><p>Проверить веб-архивы и другие публичные копии, зафиксировать URL, дату и контекст. Архивная копия подтверждает, что определённое содержимое было доступно в определённый момент, но её тоже нужно оценивать критически.</p></details>
+    <details class="faq-item"><summary>Что такое reverse image search?</summary><p>Это поиск по самому изображению или его фрагменту. Он помогает найти похожие изображения и более ранние публикации, но совпадение само по себе не доказывает происхождение фотографии.</p></details>
+    <details class="faq-item"><summary>Как определить геолокацию?</summary><p>Ищи несколько независимых признаков: дорожную сеть, здания, вывески, рельеф, растительность, положение солнца и форму объектов. Один похожий дом или дорога — слабое доказательство.</p></details>
+    <details class="faq-item"><summary>Что такое метаданные?</summary><p>Это технические сведения о файле, например тип, размеры и иногда параметры создания. Метаданные могут отсутствовать или изменяться после пересохранения, поэтому не следует считать их абсолютной истиной.</p></details>
+    <details class="faq-item"><summary>Можно ли полностью стать анонимным?</summary><p>Абсолютной анонимности обещать нельзя. Практическая цель — уменьшать объём раскрываемых данных, использовать MFA, обновления, разные пароли и не отправлять чувствительную информацию неизвестным сервисам. citeturn0search36</p></details>
+    <details class="faq-item"><summary>Что такое false positive?</summary><p>Это ложное совпадение: найденный объект кажется подходящим, но на самом деле не связан с исследуемым фактом.</p></details>
+    <details class="faq-item"><summary>Что такое confidence?</summary><p>Оценка уверенности в выводе. Хороший отчёт объясняет не только «что мы знаем», но и «почему мы это знаем» и «что остаётся неизвестным».</p></details>
+    <details class="faq-item"><summary>Можно ли использовать AI в OSINT?</summary><p>Да, как помощника для идей, классификации, написания запросов и организации материала. Но AI может ошибаться и не должен считаться первичным источником доказательств.</p></details>
+    <details class="faq-item"><summary>Какие навыки важнее всего?</summary><p>Критическое мышление, поиск, проверка источников, работа с датами, карты, изображения, документы, систематизация данных и умение честно описывать ограничения.</p></details>
+  </div>
+</section>
+
+<section id="assistant" class="section">
+  <div class="section-head"><div class="kicker">OSINT Tutor 2.0</div><h2>Встроенный помощник</h2><p>Работает локально: объясняет термины, предлагает безопасный план исследования и помогает проверять гипотезы. Это не облачная нейросеть.</p></div>
+  <div class="ai-layout">
+    <div class="card">
+      <div id="v5AiMessages" class="ai-messages" aria-live="polite"><div class="ai-msg bot"><b>OSINT Tutor:</b> Привет. Задай вопрос или выбери готовую тему справа.</div></div>
+      <div class="field"><label for="v5AiInput">Вопрос</label><textarea id="v5AiInput" placeholder="Например: как проверить фотографию или построить pivot?"></textarea></div>
+      <div class="actions"><button class="btn primary" id="v5AiSend">Спросить</button><button class="btn" id="v6AiClear">Очистить</button></div>
+      <div class="small-note">Важно: локальный помощник не получает доступ к интернету и не должен использоваться для поиска личных данных частных людей.</div>
+    </div>
+    <aside class="ai-side"><h4>Быстрые темы</h4>
+      <button class="ai-suggestion" data-v5-prompt="Что такое OSINT?">Основы OSINT</button>
+      <button class="ai-suggestion" data-v5-prompt="Как проверить источник?">Проверка источника</button>
+      <button class="ai-suggestion" data-v5-prompt="Как сделать reverse image search?">Изображения</button>
+      <button class="ai-suggestion" data-v5-prompt="Как построить pivot?">Pivot и зацепки</button>
+      <button class="ai-suggestion" data-v5-prompt="Как определить геолокацию фото?">Геолокация</button>
+      <button class="ai-suggestion" data-v5-prompt="Что такое confidence?">Confidence</button>
+      <button class="ai-suggestion" data-v5-prompt="Как безопасно работать с публичными данными?">Безопасность</button>
+    </aside>
+  </div>
+</section>
+
+<section id="graphLab" class="section">
+  <div class="section-head">
+    <div class="kicker">GRAPH V10</div>
+    <h2>Визуализатор связей</h2>
+    <p>Новый SVG-визуализатор: без Canvas-проблем, с нормальным масштабированием, перетаскиванием узлов, панорамированием и экспортом.</p>
+  </div>
+  <div class="v10-graph">
+    <div class="v10-graph-toolbar">
+      <input id="v10NodeA" placeholder="Сущность A">
+      <input id="v10NodeB" placeholder="Сущность B">
+      <input id="v10Edge" placeholder="Тип связи: публикует / связан с">
+      <button class="btn primary" type="button" onclick="v10AddGraphEdge()">Добавить</button>
+      <button class="btn" type="button" onclick="v10DemoGraph()">Демо</button>
+    </div>
+    <div class="v10-graph-stage" id="v10GraphStage">
+      <svg id="v10GraphSvg" viewBox="0 0 1000 540" role="img" aria-label="Интерактивный граф OSINT">
+        <defs>
+          <marker id="v10Arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 z" fill="currentColor"></path>
+          </marker>
+        </defs>
+        <g id="v10GraphWorld">
+          <g id="v10GraphEdges"></g>
+          <g id="v10GraphNodes"></g>
+        </g>
+      </svg>
+      <div class="v10-graph-empty" id="v10GraphEmpty">Граф пуст.<br>Добавь две сущности и связь или нажми «Демо».</div>
+    </div>
+    <div class="v10-graph-stats"><span id="v10GraphStatus">Узлов: 0 · Связей: 0</span><span id="v10GraphZoom">Масштаб: 100%</span></div>
+    <div class="actions" style="padding:0 12px 12px">
+      <button class="btn" type="button" onclick="v10CenterGraph()">Центрировать</button>
+      <button class="btn" type="button" onclick="v10ClearGraph()">Очистить</button>
+      <button class="btn" type="button" onclick="v10ExportGraph()">Экспорт JSON</button>
+    </div>
+    <div style="padding:0 12px 14px;color:var(--muted);font-size:12px">Узел: перетаскивай. Пустое место: панорамирование. Колесо/жест: масштаб. Двойной клик по узлу: удалить.</div>
+  </div>
+</section>
+
+<section id="performance" class="section">
+  <div class="kicker">Performance</div>
+  <h2>Оптимизация под устройство</h2>
+  <div class="speed-box">
+    <button class="btn" id="v5AutoPerf">Авто</button>
+    <button class="btn" id="v5LowPerf">Слабое устройство</button>
+    <button class="btn" id="v5HighPerf">Максимум визуала</button>
+    <span id="v5PerfStatus" class="small-note"></span>
+  </div>
+  <p>Режим «слабое устройство» отключает тяжёлые эффекты, уменьшает анимации и оставляет функциональность. В режиме «максимум» сохраняется больше визуальных эффектов.</p>
+</section>
+
+<section id="quiz">
+      <div class="section-head"><h2>Мини-тест</h2><p>Проверь, понял ли ты основу.</p></div>
+      <form class="quiz" id="quizForm">
+        <div class="q"><b>1. Что такое OSINT?</b><label><input type="radio" name="q1" value="a"> Взлом</label><label><input type="radio" name="q1" value="b"> Анализ открытой информации</label><label><input type="radio" name="q1" value="c"> Закрытая разведка</label></div>
+        <div class="q"><b>2. Что такое pivot?</b><label><input type="radio" name="q2" value="a"> Переход к новой зацепке</label><label><input type="radio" name="q2" value="b"> Удаление истории</label><label><input type="radio" name="q2" value="c"> Архивирование</label></div>
+        <div class="q"><b>3. Что делает site:example.org?</b><label><input type="radio" name="q3" value="a"> Взламывает сайт</label><label><input type="radio" name="q3" value="b"> Ограничивает поиск доменом</label><label><input type="radio" name="q3" value="c"> Удаляет результаты</label></div>
+        <div class="q"><b>4. Почему копирующие сайты не независимы?</b><label><input type="radio" name="q4" value="a"> Они используют интернет</label><label><input type="radio" name="q4" value="b"> Они могут повторять один источник</label><label><input type="radio" name="q4" value="c"> Они медленные</label></div>
+        <div class="q"><b>5. Что делать с результатом обратного поиска?</b><label><input type="radio" name="q5" value="a"> Сразу считать доказательством</label><label><input type="radio" name="q5" value="b"> Использовать как зацепку и проверять</label><label><input type="radio" name="q5" value="c"> Игнорировать дату</label></div>
+        <div class="q"><b>6. Что такое OCR?</b><label><input type="radio" name="q6" value="a"> Распознавание текста</label><label><input type="radio" name="q6" value="b"> Архив</label><label><input type="radio" name="q6" value="c"> Домен</label></div>
+        <div class="q"><b>7. Что показывает Wayback Machine?</b><label><input type="radio" name="q7" value="a"> Пароли</label><label><input type="radio" name="q7" value="b"> Исторические копии страниц</label><label><input type="radio" name="q7" value="c"> Закрытые сообщения</label></div>
+        <div class="q"><b>8. Что сильнее для геолокации?</b><label><input type="radio" name="q8" value="a"> Несколько независимых признаков</label><label><input type="radio" name="q8" value="b"> Одно похожее здание</label><label><input type="radio" name="q8" value="c"> Только название</label></div>
+        <div class="q"><b>9. False positive — это...</b><label><input type="radio" name="q9" value="a"> Пропущенное совпадение</label><label><input type="radio" name="q9" value="b"> Ошибочное совпадение</label><label><input type="radio" name="q9" value="c"> Архив</label></div>
+        <div class="q"><b>10. Что должно быть в отчёте?</b><label><input type="radio" name="q10" value="a"> Только вывод</label><label><input type="radio" name="q10" value="b"> Источники, даты, выводы и ограничения</label><label><input type="radio" name="q10" value="c"> Только название инструмента</label></div>
+        <div class="q"><b>11. Что такое metadata?</b><label><input type="radio" name="q11" value="a"> Данные о файле</label><label><input type="radio" name="q11" value="b"> Пароль</label><label><input type="radio" name="q11" value="c"> Оператор</label></div>
+        <div class="q"><b>12. Что является хорошей зацепкой?</b><label><input type="radio" name="q12" value="a"> Уникальный номер документа</label><label><input type="radio" name="q12" value="b"> Слово «информация»</label><label><input type="radio" name="q12" value="c"> Случайный символ</label></div>
+        <div class="q"><b>13. Автоматический результат инструмента — это...</b><label><input type="radio" name="q13" value="a"> Гарантированная истина</label><label><input type="radio" name="q13" value="b"> Зацепка, которую нужно проверить</label><label><input type="radio" name="q13" value="c"> Официальный документ</label></div>
+        <div class="q"><b>14. Что является слабым выводом?</b><label><input type="radio" name="q14" value="a"> Два независимых документа совпали</label><label><input type="radio" name="q14" value="b"> Архив подтверждает существование страницы</label><label><input type="radio" name="q14" value="c"> «Наверное, это связано» без основания</label></div>
+        <div class="q"><b>15. Какой вопрос полезен перед финальным выводом?</b><label><input type="radio" name="q15" value="a"> Как доказать свою версию?</label><label><input type="radio" name="q15" value="b"> Что может показать, что моя версия ошибочна?</label><label><input type="radio" name="q15" value="c"> Как найти больше личных данных?</label></div>
+        <button class="btn primary" type="submit">Проверить результат</button>
+
+      <div id="result"></div>
+    </section>
+  </div>
+
+<section id="feedback" class="section">
+  <div class="section-head">
+    <div class="kicker">CONTACT / FEEDBACK</div>
+    <h2>Обратная связь с автором</h2>
+    <p>Нашёл ошибку, хочешь предложить новую тему или есть идея для следующего обновления? Напиши автору OSINT Academy.</p>
+  </div>
+  <div class="feedback-wrap">
+    <article class="feedback-card">
+      <span class="feedback-kicker">● Автор проекта</span>
+      <h3 class="feedback-title">Заблудший</h3>
+      <p class="feedback-text">Автор и разработчик OSINT Academy. Обратная связь помогает находить ошибки, улучшать материалы и добавлять новые учебные возможности.</p>
+      <div class="contact-list">
+        <a class="contact-link" href="https://t.me/Sherlockgo" target="_blank" rel="noopener noreferrer">
+          <span class="contact-icon">TG</span>
+          <span class="contact-meta"><small>Telegram</small><b>@Sherlockgo</b></span>
+        </a>
+        <a class="contact-link" href="mailto:betazetaq@protonmail.com">
+          <span class="contact-icon">@</span>
+          <span class="contact-meta"><small>Email</small><b>betazetaq@protonmail.com</b></span>
+        </a>
+      </div>
+    </article>
+
+    <aside class="feedback-card">
+      <span class="feedback-kicker">Идеи для сообщения</span>
+      <h3>Что можно отправить</h3>
+      <ul>
+        <li>ошибку или неработающую функцию;</li>
+        <li>предложение по дизайну;</li>
+        <li>идею нового модуля или тренажёра;</li>
+        <li>замечание по материалам;</li>
+        <li>предложение для следующей версии сайта.</li>
+      </ul>
+      <div class="feedback-actions">
+        <button class="feedback-copy" type="button" id="copyTelegram">Скопировать Telegram</button>
+        <button class="feedback-copy" type="button" id="copyEmail">Скопировать Email</button>
+      </div>
+      <div class="feedback-status" id="feedbackStatus" aria-live="polite"></div>
+      <p class="feedback-note">Не отправляй пароли, коды подтверждения, документы или другие чувствительные данные.</p>
+    </aside>
+  </div>
+</section>
+
+</main>
+
+
+<div class="v9-ai-input"><input id="v9AiInput" placeholder="Например: с чего начать OSINT?" onkeydown="if(event.key==='Enter')v9AiSend()"><button onclick="v9AiSend()">Отправить</button></div>
+</div>
+</div>
+
+
+
+<div class="v10-welcome" id="v10Welcome" aria-label="OSINT Academy приветствие">
+  <div class="v12-intro">
+    <div class="v12-grid"></div>
+    <div class="v12-glow"></div>
+
+    <div class="v12-brand">
+      <div class="v12-logo">O</div>
+      <div>
+        <div class="v12-kicker">OSINT ACADEMY</div>
+        <div class="v12-version">VERSION 12 · TRAINING SYSTEM</div>
+      </div>
+    </div>
+
+    <div class="v12-line"></div>
+
+    <div class="v12-content">
+      <div class="v12-eyebrow"><span></span> СИСТЕМА ГОТОВА</div>
+      <h2>Здравствуй, <em>ученик.</em></h2>
+      <p>
+        Добро пожаловать в <strong>OSINT Academy</strong> — интерактивную академию
+        поиска и проверки открытой информации.
+      </p>
+
+      <div class="v12-principles">
+        <div><b>01</b><span>Найди<br><small>зацепку</small></span></div>
+        <div><b>02</b><span>Проверь<br><small>источник</small></span></div>
+        <div><b>03</b><span>Сделай<br><small>вывод</small></span></div>
+      </div>
+
+      <div class="v12-rule">
+        <span>◆</span>
+        <div><b>Главный принцип</b><br>Факты важнее догадок. Проверяй информацию по нескольким независимым источникам.</div>
+      </div>
+
+      <div class="v12-actions">
+        <button class="btn primary" type="button" onclick="v12Enter()">Начать обучение →</button>
+        <button class="btn" type="button" onclick="v12Tutor()">Открыть наставника</button>
+      </div>
+      <button class="v12-skip" type="button" onclick="v10CloseWelcome()">Продолжить без интро</button>
+    </div>
+
+    <div class="v12-footer">
+      <span>PUBLIC INFORMATION · VERIFICATION · RESEARCH</span>
+      <span>● ONLINE</span>
+    </div>
+  </div>
+</div>
+
+<!-- V10 persistent UI -->
+<button class="v10-contact-fab" type="button" onclick="v10ToggleContact()">Связь с автором</button>
+<div class="v10-contact-panel" id="v10ContactPanel" aria-label="Связь с автором">
+  <div class="v10-contact-head"><b>Обратная связь</b><button class="btn" type="button" onclick="v10ToggleContact()">×</button></div>
+  <div class="v10-contact-body">
+    <p style="margin-top:0;color:var(--muted);font-size:13px">Автор проекта: <b style="color:var(--text)">Заблудший</b></p>
+    <a class="v10-contact-link" href="https://t.me/Sherlockgo" target="_blank" rel="noopener noreferrer"><span>Telegram</span><span><small>Аккаунт</small><b>@Sherlockgo</b></span></a>
+    <a class="v10-contact-link" href="mailto:betazetaq@protonmail.com"><span>Email</span><span><small>Почта</small><b>betazetaq@protonmail.com</b></span></a>
+    <a class="btn primary" style="display:block;text-align:center;margin-top:10px" href="#feedback" onclick="v10ToggleContact()">Открыть полный раздел связи</a>
+  </div>
+</div>
+
+<div class="v10-ai" id="v10Ai" aria-label="AI-наставник">
+  <div class="v10-ai-head"><b>AI-наставник V10</b><button class="btn" type="button" onclick="v10CloseAI()">×</button></div>
+  <div class="v10-ai-body" id="v10AiBody">
+    <div class="v10-ai-msg"><b>Здравствуйте, ученик.</b> Я локальный учебный наставник. Могу помочь с маршрутом, поиском, pivot, проверкой, геолокацией, Dork Lab и графом.</div>
+  </div>
+  <form class="v10-ai-form" onsubmit="event.preventDefault();v10SendAI()">
+    <input id="v10AiInput" autocomplete="off" placeholder="С чего начать OSINT?">
+    <button type="submit">→</button>
+  </form>
+</div>
+
+<div class="v10-command" id="v10Command" onclick="if(event.target===this)v10CloseCommand()">
+  <div class="v10-command-box">
+    <input class="v10-command-input" id="v10CommandInput" placeholder="Перейти к разделу…" oninput="v10RenderCommands()" onkeydown="v10CommandKey(event)">
+    <div class="v10-command-list" id="v10CommandList"></div>
+  </div>
+</div>
+<footer>
+  <div class="wrap">OSINT Academy v10 • Учебный проект · By : Заблудший · Используй знания ответственно и только в законных целях.</div>
+</footer>
+
+<script>
+const lessons = [
+{title:"01. Мышление OSINT",html:`<h3>Модуль 1 — мышление исследователя</h3><p>OSINT начинается с вопроса, а не с инструмента.</p><ul><li>Факт ≠ гипотеза.</li><li>Не подгоняй поиск под заранее выбранный ответ.</li><li>Записывай, что подтверждено, а что опровергнуто.</li></ul><div class="callout"><b>Формула:</b> вопрос → гипотезы → источники → проверка → вывод → уверенность.</div>`},
+{title:"02. Источники",html:`<h3>Модуль 2 — типы источников</h3><p>Различай первичные, вторичные, архивные и пользовательские источники.</p><ul><li>Первичный источник непосредственно связан с утверждением.</li><li>Вторичный пересказывает или анализирует.</li><li>Архив показывает историческую версию страницы.</li></ul>`},
+{title:"03. Поисковая стратегия",html:`<h3>Модуль 3 — стратегия поиска</h3><p>Строй серию запросов: от широкого к точному.</p><div class="code">тема → редкое слово → точная фраза → site:домен → filetype:pdf → новый pivot</div>`},
+{title:"04. Операторы",html:`<h3>Модуль 4 — поисковые операторы</h3><p>Основные конструкции:</p><div class="callout"><code>"точная фраза"</code><br><code>site:example.org тема</code><br><code>filetype:pdf тема</code><br><code>intitle:отчёт</code><br><code>-слово</code><br><code>after:2025-01-01</code></div><p>Синтаксис зависит от поисковика.</p>`},
+{title:"05. Зацепки",html:`<h3>Модуль 5 — зацепки</h3><p>Зацепка — уникальная деталь, ведущая к следующему источнику.</p><ul><li>номер документа;</li><li>редкая фраза;</li><li>название проекта;</li><li>дата;</li><li>название файла;</li><li>деталь изображения.</li></ul>`},
+{title:"06. Pivoting",html:`<h3>Модуль 6 — pivoting</h3><p>Pivot — переход от одной зацепки к другой.</p><div class="code">документ → номер → сайт → другой документ → дата → архив → первоисточник</div>`},
+{title:"07. Проверка утверждений",html:`<h3>Модуль 7 — verification</h3><p>Разложи утверждение на маленькие проверяемые части.</p><ul><li>Кто утверждает?</li><li>Когда?</li><li>Какой первичный источник?</li><li>Есть ли независимое подтверждение?</li><li>Не вырван ли фрагмент из контекста?</li></ul>`},
+{title:"08. Веб-архивы",html:`<h3>Модуль 8 — архивы</h3><p>Сравнивай текущую и старую версии публичной страницы.</p><ul><li>URL;</li><li>дата снимка;</li><li>изменения текста;</li><li>ссылки на документы.</li></ul>`},
+{title:"09. Изображения",html:`<h3>Модуль 9 — изображения</h3><p>Обратный поиск — источник зацепок, а не автоматическое доказательство.</p><ol><li>Проверь ранние публикации.</li><li>Обрежь уникальную деталь.</li><li>Сравни контекст.</li><li>Проверь независимый источник.</li></ol>`},
+{title:"10. Видео",html:`<h3>Модуль 10 — видео</h3><p>Разбирай видео по кадрам и отделяй дату загрузки от даты съёмки.</p><ul><li>текст и вывески;</li><li>архитектура;</li><li>дороги;</li><li>погода;</li><li>сравнение нескольких публикаций.</li></ul>`},
+{title:"11. OCR",html:`<h3>Модуль 11 — OCR</h3><p>OCR распознаёт текст на изображении.</p><div class="code">изображение → OCR → редкое слово → поиск → источник → проверка</div><p>Всегда перепроверяй распознанные символы.</p>`},
+{title:"12. Метаданные",html:`<h3>Модуль 12 — metadata</h3><p>Метаданные могут содержать технические сведения о файле.</p><ul><li>Не путай дату файла с датой события.</li><li>Метаданные могут исчезнуть после обработки.</li><li>Сопоставляй их с содержимым.</li></ul>`},
+{title:"13. Геолокация",html:`<h3>Модуль 13 — геолокация</h3><p>Сопоставляй несколько признаков: дороги, здания, вывески, рельеф, растительность и спутниковую геометрию.</p><div class="callout"><b>Правило:</b> одно похожее здание — слабый признак; несколько независимых совпадений — значительно сильнее.</div>`},
+{title:"14. Chronolocation",html:`<h3>Модуль 14 — время</h3><p>Время можно оценивать по теням, погоде, растительности и контексту.</p><p>Приблизительную оценку нельзя выдавать за точную дату без дополнительного подтверждения.</p>`},
+{title:"15. Карты и спутник",html:`<h3>Модуль 15 — карты</h3><p>Сравнивай не только названия, но и геометрию.</p><ul><li>перекрёстки;</li><li>повороты;</li><li>водоёмы;</li><li>расположение зданий;</li><li>расстояния и направления.</li></ul>`},
+{title:"16. Домены",html:`<h3>Модуль 16 — сайты и домены</h3><p>Изучай только публичную информацию: страницы, архивы, сертификаты, документы и структуру сайта.</p><div class="callout danger"><b>Граница:</b> не пытайся входить в закрытые панели, обходить защиту или получать закрытые данные.</div>`},
+{title:"17. Документы",html:`<h3>Модуль 17 — PDF и документы</h3><p>Ищи номер, дату, автора, организацию, ссылки и приложения.</p><div class="callout"><b>Pivot:</b> уникальный номер документа часто становится новым поисковым ключом.</div>`},
+{title:"18. Таблицы",html:`<h3>Модуль 18 — структурированные данные</h3><p>Сортируй, фильтруй и сравнивай периоды. Проверяй единицы измерения и методику сбора.</p>`},
+{title:"19. Граф связей",html:`<h3>Модуль 19 — граф данных</h3><p>Узлы — факты и источники; рёбра — подтверждённые связи.</p><div class="code">A ← источник A<br>B ← источник B<br>A ↔ B ← отдельное основание</div>`},
+{title:"20. Хронология",html:`<h3>Модуль 20 — timeline</h3><p>Собирай события в порядке времени: дата → событие → источник → что подтверждено.</p>`},
+{title:"21. Независимость",html:`<h3>Модуль 21 — независимость источников</h3><p>Проверь, не копируют ли два сайта один и тот же материал.</p><ul><li>одинаковая редкая ошибка;</li><li>одинаковая последовательность текста;</li><li>один первоисточник.</li></ul>`},
+{title:"22. Ложные совпадения",html:`<h3>Модуль 22 — false positives</h3><p>Одинаковое название, изображение или фамилия не гарантируют, что речь идёт об одном объекте.</p><p>Ищи дополнительные признаки, которые могут различить похожие объекты.</p>`},
+{title:"23. Отчёт",html:`<h3>Модуль 23 — отчёт</h3><p>Хороший отчёт воспроизводим.</p><ul><li>вопрос;</li><li>метод;</li><li>источники;</li><li>наблюдения;</li><li>вывод;</li><li>ограничения.</li></ul>`},
+{title:"24. Этика и воспроизводимость",html:`<h3>Модуль 24 — финальная методика</h3><p>Храни журнал запросов, даты доступа и источники. Не публикуй лишние персональные данные.</p><div class="callout danger"><b>Нельзя:</b> доксинг, преследование, взлом, обход доступа и поиск закрытых персональных данных.</div>`}
+];
+
+const list = document.getElementById("lessonList");
+const panel = document.getElementById("lessonPanel");
+
+function showLesson(i){
+  panel.innerHTML = lessons[i].html;
+  [...list.children].forEach((el,n)=>el.classList.toggle("active",n===i));
+  panel.scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+lessons.forEach((l,i)=>{
+  const el=document.createElement("div");
+  el.className="lesson";
+  el.innerHTML=`<b>${String(i+1).padStart(2,"0")}</b> ${l.title.replace(/^\d+\. /,"")}`;
+  el.onclick=()=>showLesson(i);
+  list.appendChild(el);
+});
+showLesson(0);
+window.lessons=lessons;window.loadLesson=showLesson;
+
+
+const queryInput=document.getElementById("queryInput");
+const queryResults=document.getElementById("queryResults");
+document.getElementById("queryBtn").addEventListener("click",()=>{
+  const q=queryInput.value.trim();
+  if(!q){queryResults.innerHTML='<div class="result-item">Введи публичную тему, документ, дату или название организации.</div>';return;}
+  const e=q.replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+  queryResults.innerHTML=[
+    `<div class="result-item"><b>Точная фраза:</b> "${e}"</div>`,
+    `<div class="result-item"><b>PDF:</b> ${e} filetype:pdf</div>`,
+    `<div class="result-item"><b>Сайт:</b> site:example.org ${e}</div>`,
+    `<div class="result-item"><b>Дата:</b> ${e} 2026</div>`,
+    `<div class="result-item"><b>Следующий pivot:</b> возьми редкое слово, номер или название из результата.</div>`
+  ].join("");
+});
+document.getElementById("clearQuery").addEventListener("click",()=>{queryInput.value="";queryResults.innerHTML=""});
+
+document.getElementById("checkSource").addEventListener("click",()=>{
+  const title=document.getElementById("sourceTitle").value.trim();
+  const date=document.getElementById("sourceDate").value.trim();
+  const origin=document.getElementById("sourceOrigin").value;
+  const out=document.getElementById("sourceResult");
+  const missing=[];
+  if(!title)missing.push("название");
+  if(!date)missing.push("дата");
+  if(!origin)missing.push("происхождение");
+  out.innerHTML=missing.length
+    ? `<div class="result-item"><b>Не хватает:</b> ${missing.join(", ")}</div>`
+    : `<div class="result-item"><b>Проверка:</b> базовые поля заполнены. Следующий шаг — независимое подтверждение и проверка контекста.</div>`;
+});
+
+document.getElementById("pivotBtn").addEventListener("click",()=>{
+  const type=document.getElementById("clueType").value;
+  const value=document.getElementById("clueValue").value.trim();
+  const out=document.getElementById("pivotResult");
+  if(!value){out.innerHTML='<div class="result-item">Введи значение зацепки.</div>';return;}
+  const plans={
+    phrase:["поиск точной фразы","поиск короткого уникального фрагмента","сравнение ранних публикаций"],
+    document:["поиск номера вместе с организацией","проверка официального сайта","сравнение документов той же серии"],
+    domain:["проверка публичных разделов","архивные версии","поиск публичных документов"],
+    place:["карта","геометрия дорог и объектов","независимый визуальный признак"],
+    image:["обратный поиск","обрезка уникальной детали","проверка более раннего контекста"],
+    date:["события вокруг даты","публикации до и после","первичный документ"]
+  };
+  out.innerHTML=`<div class="result-item"><b>Зацепка:</b> ${value}</div>`+
+    plans[type].map((x,i)=>`<div class="result-item"><b>Шаг ${i+1}:</b> ${x}</div>`).join("");
+});
+
+const flashcards=[
+["Pivot","Переход от одной зацепки к новой."],["OCR","Распознавание текста на изображении."],
+["Metadata","Дополнительные данные о файле."],["Geolocation","Определение места по открытым признакам."],
+["Verification","Проверка источника, факта и контекста."],["False positive","Ошибочное совпадение."]
+];
+let cardIndex=0;
+function renderCard(){
+  document.getElementById("flashTerm").textContent=flashcards[cardIndex][0];
+  document.getElementById("flashDef").textContent=flashcards[cardIndex][1];
+}
+document.getElementById("nextCard").addEventListener("click",()=>{cardIndex=(cardIndex+1)%flashcards.length;renderCard()});
+document.getElementById("shuffleCards").addEventListener("click",()=>{flashcards.sort(()=>Math.random()-.5);cardIndex=0;renderCard()});
+renderCard();
+
+document.getElementById("quizForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  const answers={q1:"b",q2:"a",q3:"b",q4:"b",q5:"b",q6:"a",q7:"b",q8:"a",q9:"b",q10:"b",q11:"a",q12:"a",q13:"b",q14:"c",q15:"b"};
+  let score=0;
+  for(const [q,a] of Object.entries(answers)){
+    if(document.querySelector(`input[name="${q}"]:checked`)?.value===a)score++;
+  }
+  const msg=score===15?"Идеально.":score>=12?"Очень хороший результат.":score>=9?"Хорошая база, повтори ошибки.":"Вернись к первым модулям и попробуй ещё раз.";
+  document.getElementById("result").textContent=`Результат: ${score}/15. ${msg}`;
+});
+window.addEventListener("scroll",()=>{
+  const h=document.documentElement;
+  const p=(h.scrollTop/(h.scrollHeight-h.clientHeight))*100;
+  document.getElementById("progress").style.width=p+"%";
+});
+
+// OSINT Academy learning layer: local-only progress.
+(function(){
+  const KEY="osint_academy_progress_v3";
+  let done=JSON.parse(localStorage.getItem(KEY)||"[]");
+  const list=document.getElementById("moduleList");
+  const filter=document.getElementById("moduleFilter");
+  const bar=document.getElementById("courseProgress");
+  const status=document.getElementById("courseStatus");
+  if(!list || !Array.isArray(window.lessons)) return;
+
+  function render(){
+    const needle=(filter?.value||"").trim().toLowerCase();
+    list.innerHTML="";
+    window.lessons.forEach((lesson,i)=>{
+      if(needle && !lesson.title.toLowerCase().includes(needle)) return;
+      const b=document.createElement("button");
+      b.className="btn"+(done.includes(i)?" primary":"");
+      b.type="button";
+      b.textContent=(done.includes(i)?"✓ ":"")+lesson.title;
+      b.addEventListener("click",()=>{
+        if(typeof window.loadLesson==="function") window.loadLesson(i);
+        done=[...new Set([...done,i])];
+        localStorage.setItem(KEY,JSON.stringify(done));
+        render();
+      });
+      list.appendChild(b);
+    });
+    const total=window.lessons.length;
+    const pct=total?Math.round(done.length/total*100):0;
+    if(bar)bar.style.width=pct+"%";
+    if(status)status.textContent=`Прогресс: ${done.length} из ${total} модулей · ${pct}%`;
+  }
+  filter?.addEventListener("input",render);
+  document.getElementById("resetModules")?.addEventListener("click",()=>{
+    if(confirm("Сбросить локальный прогресс курса?")){
+      done=[];localStorage.removeItem(KEY);render();
+    }
+  });
+  render();
+})();
+
+
+/* OSINT Academy v5: directory, FAQ, local tutor, graph 2.0 and performance */
+(function(){
+  const esc=s=>String(s).replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
+
+  // Theme
+  const savedTheme=localStorage.getItem("osint_theme_v5")||"dark";
+  document.documentElement.dataset.theme=savedTheme;
+  function setTheme(t){document.documentElement.dataset.theme=t;localStorage.setItem("osint_theme_v5",t);document.querySelectorAll("[data-theme-choice]").forEach(b=>b.classList.toggle("active",b.dataset.themeChoice===t));}
+  if(!document.querySelector(".theme-switcher")){
+    const host=document.querySelector(".navbar")||document.querySelector("header");
+    if(host){
+      const box=document.createElement("div");box.className="theme-switcher";
+      box.innerHTML='<button class="btn" data-theme-choice="light">☀ Светлая</button><button class="btn" data-theme-choice="dark">◐ Тёмная</button>';
+      host.appendChild(box);
+      box.querySelectorAll("button").forEach(b=>b.onclick=()=>setTheme(b.dataset.themeChoice));
+    }
+  }
+  setTheme(savedTheme);
+
+  // Directory of public-source tools.
+  const sites=[
+    ["Google","search","Общий веб-поиск и поиск по домену","https://www.google.com/"],
+    ["Bing","search","Веб-поиск и визуальный поиск","https://www.bing.com/"],
+    ["DuckDuckGo","search","Альтернативный веб-поиск","https://duckduckgo.com/"],
+    ["Google Advanced Search","search","Расширенные параметры поиска","https://www.google.com/advanced_search"],
+    ["Wayback Machine","archive","История публичных веб-страниц","https://web.archive.org/"],
+    ["Archive.today","archive","Публичные архивные копии страниц","https://archive.ph/"],
+    ["Bellingcat Toolkit","verify","Каталог OSINT-инструментов и методик","https://www.bellingcat.com/resources/2024/09/24/bellingcat-online-investigations-toolkit/"],
+    ["Google Lens","image","Поиск по изображению","https://lens.google.com/"],
+    ["Bing Visual Search","image","Визуальный поиск","https://www.bing.com/visualsearch"],
+    ["InVID / WeVerify","image","Проверка видео и ключевых кадров","https://www.invid-project.eu/tools-and-services/invid-verification-plugin/"],
+    ["OpenStreetMap","geo","Открытые карты и объекты","https://www.openstreetmap.org/"],
+    ["Google Maps","geo","Карты и спутниковый просмотр","https://maps.google.com/"],
+    ["GeoHints","geo","Справочник геолокационных признаков","https://geohints.com/"],
+    ["SunCalc","geo","Анализ положения солнца и теней","https://www.suncalc.org/"],
+    ["Mapillary","geo","Публичные фотографии улиц","https://www.mapillary.com/"],
+    ["crt.sh","domain","Публичные сертификаты доменов","https://crt.sh/"],
+    ["urlscan.io","domain","Публичные результаты анализа URL","https://urlscan.io/"],
+    ["ICANN Lookup","domain","Информация о регистрации доменов","https://lookup.icann.org/"],
+    ["OpenCorporates","company","Открытые сведения о компаниях","https://opencorporates.com/"],
+    ["SEC EDGAR","company","Публичные корпоративные документы США","https://www.sec.gov/edgar"],
+    ["Data.gov","data","Открытые государственные данные США","https://data.gov/"],
+    ["Global Forest Watch","data","Открытые экологические и геоданные","https://www.globalforestwatch.org/"],
+    ["ExifTool","verify","Технический анализ метаданных файлов","https://exiftool.org/"],
+    ["Bellingcat Auto Archiver","archive","Сохранение публичного веб-контента","https://www.bellingcat.com/resources/2025/08/13/the-open-source-tool-that-has-preserved-150000-pieces-of-online-evidence/"],
+    ["OpenAlex","data","Открытые научные метаданные","https://openalex.org/"],
+    ["Crossref","data","Метаданные научных публикаций","https://search.crossref.org/"],
+    ["Wikidata","data","Структурированные открытые данные","https://www.wikidata.org/"],
+    ["OpenSanctions","data","Открытые наборы данных о санкционных списках и организациях","https://www.opensanctions.org/"],
+    ["GDELT","data","Открытые данные о мировых медиа и событиях","https://www.gdeltproject.org/"],
+    ["VirusTotal","verify","Публичный анализ файлов, URL и доменов; учитывай условия и приватность загрузок","https://www.virustotal.com/"],
+    ["Telegram Bot API","verify","Официальная документация для собственных ботов","https://core.telegram.org/bots/api"]
+  ];
+  const dg=document.getElementById("directoryGrid"), ds=document.getElementById("directorySearch"), dt=document.getElementById("directoryType");
+  function renderDirectory(){
+    if(!dg)return;
+    const q=(ds.value||"").toLowerCase(), type=dt.value;
+    dg.innerHTML=sites.filter(s=>(type==="all"||s[1]===type)&&(s[0]+" "+s[2]).toLowerCase().includes(q)).map(s=>
+      `<div class="directory-card"><div class="site">${esc(s[0])}</div><p>${esc(s[2])}</p><span class="type">${esc(s[1])}</span><br><a href="${s[3]}" target="_blank" rel="noopener noreferrer">Открыть сайт ↗</a></div>`
+    ).join("")||"<div class='directory-card'>Ничего не найдено.</div>";
+  }
+  ds?.addEventListener("input",renderDirectory);dt?.addEventListener("change",renderDirectory);renderDirectory();
+
+  // Local tutor 2.0 — deterministic, safe, offline and tolerant of empty/unknown input.
+  const answers=[
+    [/что такое|осинт|open source intelligence/,'OSINT — системный сбор, проверка и анализ информации из открытых источников. Хорошая работа состоит из вопроса, поиска, проверки, сопоставления и фиксации доказательств.'],
+    [/pivot|зацепк/,'Pivot — переход от одной подтверждённой зацепки к другой. Схема: факт → новый идентификатор/документ/дата → независимая проверка → следующая зацепка.'],
+    [/источник|проверить|вериф/,'Проверь автора или организацию, дату, первичность, контекст и ссылку на оригинал. Затем ищи независимое подтверждение. Две перепечатки одной новости не равны двум независимым источникам.'],
+    [/геолока|место|фото|карт/,'Для геолокации выпиши признаки: текст, дорожную разметку, архитектуру, рельеф, растительность, тени и ориентиры. Сначала формируй гипотезу, затем проверяй её несколькими независимыми признаками.'],
+    [/pdf|документ/,'Для PDF проверь название, дату, автора/организацию, номер документа, официальный источник, связанные документы и архивную копию. Отдельно отметь, что является фактом, а что интерпретацией.'],
+    [/архив|удален|удалили/,'Если страница исчезла, проверь веб-архивы и публичные копии. Сохраняй исходный URL, дату доступа и дату архивной версии.'],
+    [/номер|телефон/,'Учебный безопасный вариант — искать только номер, который публично опубликован самой организацией или в официальном каталоге. Не используй OSINT для деанонимизации частного человека.'],
+    [/аноним|приват|безопас/,'Полной анонимности не существует. Снижать цифровой след помогают MFA, уникальные пароли, обновления, минимизация личных данных и осторожность с внешними сервисами.'],
+    [/ai|ии|искусствен/,'AI полезен для гипотез, структуры заметок и объяснения терминов, но может ошибаться. Ключевые утверждения нужно проверять по первичным и независимым источникам.'],
+    [/граф|связ/,'Граф показывает сущности и связи: сайт, документ, организацию, дату, событие, место. Подписывай тип связи и отделяй подтверждённые связи от гипотез.'],
+    [/домена|сайт|url/,'Для публичного анализа сайта полезны архивы, DNS/сертификатные данные, поисковые операторы и публичные документы. Авторизацию и закрытые данные обходить нельзя.'],
+    [/telegram|телеграм/,'Для OSINT используй только публичные каналы и публикации. Не отправляй чувствительные данные сторонним ботам и сервисам.'],
+    [/confidence|уверенност/,'Confidence — оценка того, насколько хорошо доказана гипотеза. Удобная шкала: низкая — одна слабая зацепка; средняя — несколько признаков; высокая — несколько независимых источников или прямое первичное подтверждение.'],
+    [/false positive|ложнополож/,'False positive — когда сигнал выглядит подходящим, но после проверки оказывается ошибочным совпадением. В OSINT всегда проверяй альтернативные объяснения.'],
+    [/план|с чего начать|начать/,'Начни с формулировки вопроса. Затем: 1) выпиши известные факты; 2) собери 2–3 независимых источника; 3) сделай pivot от каждой подтверждённой зацепки; 4) зафиксируй ссылки и даты; 5) сформулируй вывод и ограничения.']
+  ];
+  function tutor(q){
+    const s=String(q||'').trim().toLowerCase();
+    if(!s) return 'Напиши вопрос. Например: «что такое pivot?», «как проверить источник?» или «как определить геолокацию фото?»';
+    for(const [rx,a] of answers) if(rx.test(s)) return a;
+    return 'Я не нашёл точную тему. Попробуй: OSINT, pivot, проверка источника, архивы, PDF, геолокация, изображения, домены, Telegram, confidence, false positive, приватность или план исследования.';
+  }
+  const aiBox=document.getElementById('v5AiMessages'),aiIn=document.getElementById('v5AiInput');
+  function ask(q){if(!aiBox)return;const text=String(q||'').trim();if(!text)return;aiBox.insertAdjacentHTML('beforeend',`<div class="ai-msg user"><b>Ты:</b> ${esc(text)}</div><div class="ai-msg bot"><b>OSINT Tutor:</b> ${esc(tutor(text))}</div>`);aiBox.scrollTop=aiBox.scrollHeight;}
+  document.getElementById('v5AiSend')?.addEventListener('click',()=>{ask(aiIn?.value);if(aiIn)aiIn.value='';aiIn?.focus()});
+  aiIn?.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){e.preventDefault();document.getElementById('v5AiSend')?.click()}});
+  document.querySelectorAll('[data-v5-prompt]').forEach(b=>b.addEventListener('click',()=>{if(aiIn){aiIn.value=b.dataset.v5Prompt||'';document.getElementById('v5AiSend')?.click()}}));
+  document.getElementById('v6AiClear')?.addEventListener('click',()=>{if(aiBox)aiBox.innerHTML='<div class="ai-msg bot"><b>OSINT Tutor:</b> История очищена. Задай новый вопрос.</div>'});
+
+  // Performance switch with automatic device heuristic.
+  function perf(v){
+    let mode=v;
+    if(v==='auto'){
+      const cores=navigator.hardwareConcurrency||4, mem=navigator.deviceMemory||4, save=navigator.connection?.saveData;
+      mode=(save||cores<=2||mem<=2)?'low':'high';
+    }
+    document.documentElement.dataset.performance=mode;
+    localStorage.setItem('osint_perf_v5',v);
+    const el=document.getElementById('v5PerfStatus');if(el)el.textContent='Режим: '+(v==='low'?'слабое устройство':v==='high'?'максимум визуала':'авто → '+mode);
+  }
+  const savedPerf=localStorage.getItem('osint_perf_v5')||'auto';perf(savedPerf);
+  document.getElementById('v5AutoPerf')?.addEventListener('click',()=>perf('auto'));document.getElementById('v5LowPerf')?.addEventListener('click',()=>perf('low'));document.getElementById('v5HighPerf')?.addEventListener('click',()=>perf('high'));
+
+  // Graph V10: DPR-safe canvas, zoom/pan, stable pointer handling, labels, export.
+  const canvas=document.getElementById('v5GraphCanvas');
+  if(canvas){
+    const ctx=canvas.getContext('2d',{alpha:false});
+    const st={nodes:[],edges:[],drag:null,pan:{x:0,y:0},zoom:1,panDrag:null};
+    const id=()=>globalThis.crypto?.randomUUID?crypto.randomUUID():String(Date.now()+Math.random());
+    function resize(){const d=Math.min(window.devicePixelRatio||1,1.75),w=Math.max(320,canvas.clientWidth||canvas.parentElement?.clientWidth||700),h=Math.max(360,canvas.clientHeight||560);canvas.width=Math.round(w*d);canvas.height=Math.round(h*d);ctx.setTransform(d,0,0,d,0,0);draw();}
+    function screenToWorld(x,y){return{x:(x-st.pan.x-w()/2)/st.zoom+w()/2,y:(y-st.pan.y-h()/2)/st.zoom+h()/2}}
+    function w(){return canvas.clientWidth||700}function h(){return canvas.clientHeight||560}
+    function getNode(name){let n=st.nodes.find(x=>x.name===name);if(!n){n={id:id(),name,x:w()/2+(Math.random()-.5)*260,y:h()/2+(Math.random()-.5)*180,r:28};st.nodes.push(n)}return n}
+    function addEdge(a,b,label){const A=getNode(a),B=getNode(b);if(A.id!==B.id&&!st.edges.some(e=>(e.a===A.id&&e.b===B.id)||(e.a===B.id&&e.b===A.id))){st.edges.push({a:A.id,b:B.id,label:label||'связь'});draw();status()}}
+    function draw(){
+      const W=w(),H=h(),light=document.documentElement.dataset.theme==='light';ctx.save();ctx.clearRect(0,0,W,H);ctx.fillStyle=light?'#f7f9fc':'#0c1220';ctx.fillRect(0,0,W,H);ctx.translate(W/2+st.pan.x,H/2+st.pan.y);ctx.scale(st.zoom,st.zoom);ctx.translate(-W/2,-H/2);
+      ctx.strokeStyle=light?'rgba(20,32,51,.08)':'rgba(255,255,255,.06)';ctx.lineWidth=1/st.zoom;for(let x=20;x<W;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke()}for(let y=20;y<H;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke()}
+      st.edges.forEach(e=>{const a=st.nodes.find(n=>n.id===e.a),b=st.nodes.find(n=>n.id===e.b);if(!a||!b)return;const ang=Math.atan2(b.y-a.y,b.x-a.x),ax=b.x-Math.cos(ang)*b.r,ay=b.y-Math.sin(ang)*b.r;ctx.strokeStyle=light?'#087f73':'#20cdbb';ctx.lineWidth=2/st.zoom;ctx.beginPath();ctx.moveTo(a.x+Math.cos(ang)*a.r,a.y+Math.sin(ang)*a.r);ctx.lineTo(ax,ay);ctx.stroke();ctx.beginPath();ctx.moveTo(ax,ay);ctx.lineTo(ax-Math.cos(ang-.5)*8/st.zoom,ay-Math.sin(ang-.5)*8/st.zoom);ctx.lineTo(ax-Math.cos(ang+.5)*8/st.zoom,ay-Math.sin(ang+.5)*8/st.zoom);ctx.closePath();ctx.fillStyle=light?'#087f73':'#20cdbb';ctx.fill();const mx=(a.x+b.x)/2,my=(a.y+b.y)/2;ctx.fillStyle=light?'#425066':'#aab6ca';ctx.font=`${12/st.zoom}px system-ui`;ctx.textAlign='center';ctx.fillText(e.label,mx,my-7/st.zoom)});
+      st.nodes.forEach(n=>{ctx.beginPath();ctx.arc(n.x,n.y,n.r,0,Math.PI*2);ctx.fillStyle=light?'#6657d9':'#6d5dfc';ctx.fill();ctx.strokeStyle=light?'#fff':'rgba(255,255,255,.55)';ctx.lineWidth=2/st.zoom;ctx.stroke();ctx.fillStyle='#fff';ctx.font=`700 ${12/st.zoom}px system-ui`;ctx.textAlign='center';ctx.fillText(n.name.length>22?n.name.slice(0,20)+'…':n.name,n.x,n.y+4/st.zoom)});ctx.restore();
+      const empty=document.getElementById('v6GraphEmpty');if(empty)empty.style.display=st.nodes.length?'none':'grid';const z=document.getElementById('v6GraphZoom');if(z)z.textContent='Масштаб: '+Math.round(st.zoom*100)+'%';
+    }
+    function hit(x,y){const p=screenToWorld(x,y);return [...st.nodes].reverse().find(n=>Math.hypot(n.x-p.x,n.y-p.y)<=n.r)}
+    function status(){const el=document.getElementById('v5GraphStatus');if(el)el.textContent=`Узлов: ${st.nodes.length} · Связей: ${st.edges.length}`}
+    function center(){if(!st.nodes.length)return;const cx=st.nodes.reduce((a,n)=>a+n.x,0)/st.nodes.length,cy=st.nodes.reduce((a,n)=>a+n.y,0)/st.nodes.length;st.pan.x=w()/2-cx*st.zoom-w()/2*(1-st.zoom);st.pan.y=h()/2-cy*st.zoom-h()/2*(1-st.zoom);draw()}
+    canvas.addEventListener('pointerdown',e=>{const r=canvas.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top,n=hit(x,y);if(n){st.drag={n,dx:n.x-screenToWorld(x,y).x,dy:n.y-screenToWorld(x,y).y};canvas.setPointerCapture(e.pointerId)}else{st.panDrag={x,y,px:st.pan.x,py:st.pan.y};canvas.setPointerCapture(e.pointerId)}});
+    canvas.addEventListener('pointermove',e=>{const r=canvas.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;if(st.drag){const p=screenToWorld(x,y);st.drag.n.x=p.x+st.drag.dx;st.drag.n.y=p.y+st.drag.dy;draw()}else if(st.panDrag){st.pan.x=st.panDrag.px+(x-st.panDrag.x);st.pan.y=st.panDrag.py+(y-st.panDrag.y);draw()}});
+    canvas.addEventListener('pointerup',()=>{st.drag=null;st.panDrag=null});canvas.addEventListener('pointercancel',()=>{st.drag=null;st.panDrag=null});
+    canvas.addEventListener('dblclick',e=>{const r=canvas.getBoundingClientRect(),n=hit(e.clientX-r.left,e.clientY-r.top);if(!n)return;st.nodes=st.nodes.filter(x=>x.id!==n.id);st.edges=st.edges.filter(e=>e.a!==n.id&&e.b!==n.id);draw();status()});
+    canvas.addEventListener('wheel',e=>{e.preventDefault();const r=canvas.getBoundingClientRect(),mx=e.clientX-r.left,my=e.clientY-r.top,before=screenToWorld(mx,my);st.zoom=Math.max(.45,Math.min(2.5,st.zoom*(e.deltaY<0?1.1:.9)));const after=screenToWorld(mx,my);st.pan.x+=(after.x-before.x)*st.zoom;st.pan.y+=(after.y-before.y)*st.zoom;draw()},{passive:false});
+    document.getElementById('v5AddEdge')?.addEventListener('click',()=>{const a=document.getElementById('v5NodeA')?.value.trim(),b=document.getElementById('v5NodeB')?.value.trim(),l=document.getElementById('v5Edge')?.value.trim();if(a&&b){addEdge(a,b,l);document.getElementById('v5NodeA').value='';document.getElementById('v5NodeB').value='';document.getElementById('v5Edge').value='';}});
+    document.getElementById('v5DemoGraph')?.addEventListener('click',()=>{st.nodes=[];st.edges=[];st.zoom=1;st.pan={x:0,y:0};addEdge('Организация','Сайт','владеет');addEdge('Сайт','Документ','публикует');addEdge('Документ','Дата','имеет дату');addEdge('Документ','Архив','сохранён');center();status()});
+    document.getElementById('v5ClearGraph')?.addEventListener('click',()=>{st.nodes=[];st.edges=[];st.zoom=1;st.pan={x:0,y:0};draw();status()});document.getElementById('v5CenterGraph')?.addEventListener('click',center);
+    document.getElementById('v5ExportGraph')?.addEventListener('click',()=>{const blob=new Blob([JSON.stringify({version:3,nodes:st.nodes,edges:st.edges},null,2)],{type:'application/json'}),u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download='osint-graph.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1000)});
+    window.addEventListener('resize',resize,{passive:true});document.querySelectorAll('[data-theme-choice]').forEach(b=>b.addEventListener('click',()=>setTimeout(draw,0)));resize();status();
+  }
+
+})();
+
+
+/* v8 feedback helpers */
+(function(){
+  const status = document.getElementById('feedbackStatus');
+  function copyText(value,label){
+    if(!navigator.clipboard){
+      if(status) status.textContent = 'Скопируй вручную: ' + value;
+      return;
+    }
+    navigator.clipboard.writeText(value).then(function(){
+      if(status) status.textContent = label + ' скопирован.';
+      setTimeout(function(){ if(status) status.textContent=''; },2200);
+    }).catch(function(){
+      if(status) status.textContent = 'Не удалось скопировать. Значение: ' + value;
+    });
+  }
+  const tg = document.getElementById('copyTelegram');
+  const mail = document.getElementById('copyEmail');
+  if(tg) tg.addEventListener('click',function(){copyText('@Sherlockgo','Telegram');});
+  if(mail) mail.addEventListener('click',function(){copyText('betazetaq@protonmail.com','Email');});
+})();
+
+
+/* =========================
+   V9 runtime — local only
+   ========================= */
+const V9_TOOLS = [
+  ["Google","search","Поиск","Точный поиск, фразы, операторы.","https://www.google.com/"],
+  ["Bing","search","Поиск","Альтернативная поисковая система.","https://www.bing.com/"],
+  ["DuckDuckGo","search","Поиск","Поиск с акцентом на приватность.","https://duckduckgo.com/"],
+  ["Google Advanced Search","search","Поиск","Расширенная форма Google для точного поиска.","https://www.google.com/advanced_search"],
+  ["Google Scholar","data","Наука","Научные статьи и публикации.","https://scholar.google.com/"],
+  ["Internet Archive / Wayback","archive","Архив","Исторические версии веб-страниц.","https://web.archive.org/"],
+  ["Archive.today","archive","Архив","Снимки публичных веб-страниц.","https://archive.today/"],
+  ["Bellingcat Toolkit","verify","Верификация","Каталог инструментов и методик OSINT.","https://bellingcat.com/resources/2024/09/24/bellingcat-online-investigations-toolkit/"],
+  ["Google Lens","image","Изображения","Визуальный поиск и поиск похожих изображений.","https://lens.google.com/"],
+  ["Bing Visual Search","image","Изображения","Визуальный поиск Microsoft.","https://www.bing.com/visualsearch"],
+  ["TinEye","image","Изображения","Поиск совпадений изображения по индексу.","https://tineye.com/"],
+  ["InVID / WeVerify","verify","Видео","Набор инструментов для проверки визуальных материалов.","https://www.invid-project.eu/tools-and-services/invid-verification-plugin/"],
+  ["OpenStreetMap","geo","Гео","Открытая карта и геоданные.","https://www.openstreetmap.org/"],
+  ["Google Maps","geo","Гео","Карты, спутник и Street View там, где доступно.","https://maps.google.com/"],
+  ["GeoHints","geo","Гео","Учебные подсказки для геолокации.","https://geohints.com/"],
+  ["SunCalc","geo","Гео","Модель положения солнца для анализа освещения.","https://www.suncalc.org/"],
+  ["Mapillary","geo","Гео","Публичные изображения улиц и картографические данные.","https://www.mapillary.com/"],
+  ["crt.sh","domain","Домены","Публичный поиск сертификатов и связанных доменов.","https://crt.sh/"],
+  ["urlscan.io","verify","Сайты","Анализ публичных сканов веб-страниц.","https://urlscan.io/"],
+  ["ICANN Lookup","domain","Домены","Справочная информация по доменным именам.","https://lookup.icann.org/"],
+  ["DNSDumpster","domain","Домены","Учебный обзор DNS и инфраструктурных связей.","https://dnsdumpster.com/"],
+  ["OpenCorporates","company","Организации","Открытые данные о компаниях и регистрациях.","https://opencorporates.com/"],
+  ["SEC EDGAR","company","Организации","Публичные документы американских компаний.","https://www.sec.gov/edgar"],
+  ["Data.gov","data","Данные","Государственные открытые наборы данных США.","https://data.gov/"],
+  ["Wikidata","data","Данные","Структурированная открытая база знаний.","https://www.wikidata.org/"],
+  ["OpenAlex","data","Наука","Открытый каталог научных работ и связей.","https://openalex.org/"],
+  ["Crossref","data","Наука","Метаданные научных публикаций.","https://www.crossref.org/"],
+  ["GDELT","data","Медиа","Открытый глобальный набор данных о новостях и событиях.","https://www.gdeltproject.org/"],
+  ["Global Forest Watch","data","Гео","Открытые данные об изменениях лесного покрова.","https://www.globalforestwatch.org/"],
+  ["OpenSanctions","data","Организации","Открытые наборы данных о санкциях и связанных сущностях.","https://www.opensanctions.org/"],
+  ["ExifTool","verify","Метаданные","Инструмент для чтения метаданных локальных файлов.","https://exiftool.org/"],
+  ["Bellingcat Auto Archiver","archive","Архив","Инструменты для сохранения публичного веб-контента.","https://github.com/bellingcat/auto-archiver"],
+  ["Google Books","data","Книги","Поиск книг и библиографической информации.","https://books.google.com/"],
+  ["Open Library","data","Книги","Открытый каталог библиографических записей.","https://openlibrary.org/"]
+];
+
+const V9_COMMANDS = [
+  ["Центр старта","Главная навигация","v9hub"],["Курс","Модули обучения","course"],["Google Dork Lab","Конструктор поисковых запросов","dorklab"],
+  ["Web-центр","Каталог инструментов","v9tools"],["Практические кейсы","Синтетические тренировки","cases"],["Книги про OSINT","Учебная полка","books"],
+  ["Лаборатории","Практические инструменты","labs"],["Справочник","Каталог предыдущей версии","directory"],["AI-наставник","Локальный учебный помощник","assistant"],
+  ["Граф OSINT","Связи и сущности","graphLab"],["Тест","Проверка знаний","quiz"],["Приватность","Защита собственной информации","privacy"],
+  ["Этика и закон","Границы OSINT","ethics"],["Путь","Roadmap","roadmap"],["Связь","Обратная связь с автором","feedback"]
+];
+
+function v9OpenAI(){
+  const el=document.getElementById("v9AiDock"); if(!el)return;
+  el.classList.add("open"); setTimeout(()=>document.getElementById("v9AiInput")?.focus(),80);
+}
+function v9CloseAI(){document.getElementById("v9AiDock")?.classList.remove("open")}
+function v9CloseWelcome(){document.getElementById("v9Welcome")?.classList.add("hidden");localStorage.setItem("osint_v9_seen","1")}
+function v9OpenCommand(){
+  const el=document.getElementById("v9Command"); if(!el)return;
+  el.classList.add("open"); const inp=document.getElementById("v9CommandInput"); inp.value=""; v9RenderCommands(); setTimeout(()=>inp.focus(),50);
+}
+function v9CloseCommand(){document.getElementById("v9Command")?.classList.remove("open")}
+function v9RenderCommands(){
+  const q=(document.getElementById("v9CommandInput")?.value||"").toLowerCase().trim();
+  const box=document.getElementById("v9CommandList"); if(!box)return;
+  const arr=V9_COMMANDS.filter(x=>(x[0]+" "+x[1]).toLowerCase().includes(q));
+  box.innerHTML=arr.map((x,i)=>`<div class="v9-command-item ${i===0?'active':''}" onclick="v9Go('${x[2]}')"><span>→</span><div><b>${x[0]}</b><small>${x[1]}</small></div></div>`).join("") || `<div class="v9-command-item">Ничего не найдено.</div>`;
+}
+function v9Go(id){v9CloseCommand();document.getElementById(id)?.scrollIntoView({behavior:"smooth",block:"start"})}
+function v9CommandKey(e){
+  if(e.key==="Escape"){v9CloseCommand();return}
+  if(e.key==="Enter"){document.querySelector("#v9CommandList .v9-command-item")?.click()}
+}
+document.addEventListener("keydown",e=>{
+  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();v9OpenCommand()}
+  if(e.key==="Escape"){v9CloseCommand()}
+});
+
+function v9DorkOp(op){
+  const ta=document.getElementById("dorkQuery"); if(!ta)return;
+  const inserts={"site:":"site:example.org ","filetype:pdf":"filetype:pdf ","intitle:":"intitle:\"annual report\" ","inurl:":"inurl:report ","exact":"\"точная фраза\" ","-":"-слово "};
+  const pos=ta.selectionStart;
+  ta.value=ta.value.slice(0,pos)+(inserts[op]||"")+ta.value.slice(ta.selectionEnd);
+  ta.focus();ta.selectionStart=ta.selectionEnd=pos+(inserts[op]||"").length;
+}
+function v9BuildDork(){
+  const topic=(document.getElementById("dorkTopic")?.value||"").trim();
+  let q=(document.getElementById("dorkQuery")?.value||"").trim();
+  if(topic && !q.includes(topic)) q=(q? q+" ":"")+topic;
+  if(!q)q='site:example.org filetype:pdf "public report"';
+  document.getElementById("dorkQuery").value=q;
+  document.getElementById("dorkOutput").textContent=q;
+}
+async function v9CopyDork(){
+  v9BuildDork();const q=document.getElementById("dorkQuery").value;
+  try{await navigator.clipboard.writeText(q);document.getElementById("dorkOutput").textContent="Скопировано: "+q}catch(e){document.getElementById("dorkOutput").textContent=q}
+}
+function v9SearchDork(){v9BuildDork();const q=document.getElementById("dorkQuery").value;window.open("https://www.google.com/search?q="+encodeURIComponent(q),"_blank","noopener")}
+function v9RenderTools(){
+  const q=(document.getElementById("v9ToolSearch")?.value||"").toLowerCase().trim();
+  const cat=document.getElementById("v9ToolCategory")?.value||"all";
+  const arr=V9_TOOLS.filter(t=>(cat==="all"||t[1]===cat)&&(t.join(" ").toLowerCase().includes(q)));
+  const box=document.getElementById("v9ToolsGrid");if(!box)return;
+  box.innerHTML=arr.map(t=>`<article class="v9-tool"><span class="v9-tag">${t[2]}</span><h3>${t[0]}</h3><p>${t[3]}</p><a href="${t[4]}" target="_blank" rel="noopener noreferrer">Открыть ресурс ↗</a></article>`).join("");
+}
+function v9Case(btn,ok){btn.parentElement.querySelectorAll(".v9-choice").forEach(x=>x.classList.remove("correct","wrong"));btn.classList.add(ok?"correct":"wrong");document.getElementById("caseResult1").textContent=ok?"Верно. Старая копия показывает, что подпись «сегодня» требует проверки. Нужны дата, первоисточник и независимые подтверждения.":"Слишком быстрый вывод. В OSINT одна зацепка не заменяет проверку контекста и происхождения материала."}
+function v9Case2(btn,ok){btn.parentElement.querySelectorAll(".v9-choice").forEach(x=>x.classList.remove("correct","wrong"));btn.classList.add(ok?"correct":"wrong");document.getElementById("caseResult2").textContent=ok?"Верно. Уникальные визуальные признаки → карта/спутник → независимая проверка — намного надёжнее интуиции.":"Нет. Интуитивное угадывание или поиск частных данных не являются качественной геолокацией."}
+function v9Case3(btn,ok){btn.parentElement.querySelectorAll(".v9-choice").forEach(x=>x.classList.remove("correct","wrong"));btn.classList.add(ok?"correct":"wrong");document.getElementById("caseResult3").textContent=ok?"Верно. Оформление PDF не доказывает происхождение. Ищи официальный источник и сравнивай содержание.":"Оформление файла — слабое доказательство. Нужны происхождение, автор, дата, реквизиты и независимое подтверждение."}
+
+function v9AiAnswer(q){
+  const x=q.toLowerCase();
+  if(/нач|старт|первый/.test(x))return "Начни с раздела «Курс», затем пройди кейсы V9. Формула: вопрос → гипотеза → источник → поиск → pivot → проверка → вывод.";
+  if(/dork|оператор|google/.test(x))return "Открой Google Dork Lab. Безопасная база: site:, filetype:, intitle:, inurl:, точные фразы и исключение слова через -. Не ищи закрытые данные.";
+  if(/pivot|зацеп|связ/.test(x))return "Pivot — переход от одной подтверждённой зацепки к другой: имя организации → официальный сайт → документ → дата → связанный публичный источник. Каждый переход проверяй.";
+  if(/провер|вериф/.test(x))return "Проверь происхождение, дату, контекст и независимые источники. Если возможно, найди первичный материал. Не путай отсутствие доказательств с доказательством отсутствия.";
+  if(/гео|карт|мест/.test(x))return "Для геолокации выдели уникальные признаки: дорожная разметка, здания, рельеф, вывески, солнце. Затем сравни с картами/спутником и подтверждай несколькими признаками.";
+  if(/книг/.test(x))return "В разделе «Книги» есть карточка OSINT Techniques Майкла Баззелла и подборка методических материалов Bellingcat.";
+  if(/инструм|сайт|ресурс/.test(x))return "Открой Web-центр V9. Там есть поиск по категориям: поиск, архивы, изображения, гео, домены, организации, данные и верификация.";
+  if(/приват|аноним|безопас/.test(x))return "Защищай собственные данные: уникальные длинные пароли, MFA, обновления, минимизация чувствительной информации. Не отправляй в OSINT-сервисы то, что не нужно для задачи.";
+  if(/граф/.test(x))return "Граф помогает представить сущности и связи: источник, организация, документ, домен, событие. Добавляй связь только когда она подтверждена.";
+  return "Я учебный локальный наставник. Спроси про поиск, Dork Lab, pivot, верификацию, геолокацию, документы, архивы, графы, инструменты или маршрут обучения.";
+}
+function v9AiSend(){
+  const inp=document.getElementById("v9AiInput"),body=document.getElementById("v9AiBody");if(!inp||!body)return;
+  const q=inp.value.trim();if(!q)return;
+  body.insertAdjacentHTML("beforeend",`<div class="v9-ai-msg user">${v9Escape(q)}</div><div class="v9-ai-msg">${v9Escape(v9AiAnswer(q))}</div>`);
+  inp.value="";body.scrollTop=body.scrollHeight;
+}
+function v9Escape(s){return s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+
+function v9UpdateProgress(){
+  const keys=["osint_academy_progress_v6","osint_academy_progress_v5","osint_academy_progress_v3"];
+  let raw=null;for(const k of keys){raw=localStorage.getItem(k);if(raw)break}
+  let pct=0;
+  try{
+    const v=raw?JSON.parse(raw):null;
+    if(typeof v==="number")pct=Math.max(0,Math.min(100,v));
+    else if(v&&typeof v==="object"){
+      const vals=Object.values(v).filter(x=>typeof x==="boolean");
+      if(vals.length)pct=Math.round(vals.filter(Boolean).length/vals.length*100);
+    }
+  }catch(e){}
+  const b=document.getElementById("v9ProgressBar"),t=document.getElementById("v9ProgressText");
+  if(b)b.style.width=pct+"%";if(t)t.textContent=pct+"%";
+}
+document.addEventListener("DOMContentLoaded",()=>{
+  v9RenderTools();v9UpdateProgress();
+  
+  document.getElementById("v9AiInput")?.addEventListener("focus",()=>v9OpenAI());
+});
+
+
+
+/* =========================================================
+   OSINT ACADEMY V11 LIVE INTRO
+   Lightweight typewriter + staged welcome. No external libs.
+   ========================================================= */
+(function(){
+  "use strict";
+  const line=document.getElementById("v11TypeLine");
+  const status=document.getElementById("v11Status");
+  const messages=[
+    "initializing academy...",
+    "loading research methodology...",
+    "checking learning modules...",
+    "ready."
+  ];
+  let mi=0, ci=0;
+
+  function typeNext(){
+    if(!line || !status) return;
+    if(mi >= messages.length){
+      status.textContent="Академия готова к работе";
+      return;
+    }
+    const text=messages[mi];
+    if(ci <= text.length){
+      line.textContent=text.slice(0,ci++);
+      setTimeout(typeNext, mi===messages.length-1 ? 32 : 24);
+      return;
+    }
+    if(mi < messages.length-1) status.textContent =
+      ["Система запускается...","Загружаю методику...","Проверяю учебные модули..."][mi] || "Готово";
+    mi++; ci=0;
+    setTimeout(typeNext,180);
+  }
+
+  window.v11StartCourse=function(){
+    window.v10CloseWelcome?.();
+    setTimeout(()=>document.getElementById("course")?.scrollIntoView({behavior:"smooth",block:"start"}),60);
+  };
+  window.v11StartTutor=function(){
+    window.v10CloseWelcome?.();
+    setTimeout(()=>window.v10OpenAI?.(),80);
+  };
+
+  // Intro is shown on every fresh page session; closing it is remembered by V10.
+  // Respect reduced-motion and keep the first paint instant.
+  try{
+    if(localStorage.getItem("osint_v10_seen")==="1"){
+      const w=document.getElementById("v10Welcome");
+      if(w) w.classList.add("is-hidden");
+    }else{
+      requestAnimationFrame(typeNext);
+    }
+  }catch(e){ requestAnimationFrame(typeNext); }
+})();
+
+
+/* V12 intro controls — intentionally tiny and independent from the main app. */
+(function(){
+  "use strict";
+  window.v12Enter=function(){
+    window.v10CloseWelcome?.();
+    setTimeout(function(){document.getElementById("course")?.scrollIntoView({behavior:"smooth",block:"start"});},40);
+  };
+  window.v12Tutor=function(){
+    window.v10CloseWelcome?.();
+    setTimeout(function(){window.v10OpenAI?.();},60);
+  };
+})();
+
+/* =========================================================
+   OSINT ACADEMY V10 RUNTIME
+   No external libraries. UI-first and defensive.
+   ========================================================= */
+(function(){
+  "use strict";
+
+  /* Instant welcome: run immediately, not after heavy initialization. */
+  window.v10CloseWelcome=function(){
+    const w=document.getElementById("v10Welcome");
+    if(w) w.classList.add("is-hidden");
+    try{localStorage.setItem("osint_v10_seen","1")}catch(e){}
+  };
+  try{
+    if(localStorage.getItem("osint_v10_seen")==="1") v10CloseWelcome();
+  }catch(e){}
+
+  /* Contact */
+  window.v10ToggleContact=function(){
+    document.getElementById("v10ContactPanel")?.classList.toggle("open");
+  };
+
+  /* AI */
+  const aiAnswers=[
+    [/нач|старт|перв/, "Начни с курса: сформулируй вопрос → выпиши известные факты → найди первичный источник → сделай pivot → проверь независимым источником → зафиксируй вывод и ограничения."],
+    [/dork|оператор|google/, "Используй Dork Lab. Базовые операторы: site:, filetype:, intitle:, inurl:, точная фраза и исключение через -. Не используй запросы для поиска паролей, утечек или закрытых данных."],
+    [/pivot|зацеп|связ/, "Pivot — переход от подтверждённой зацепки к новой: документ → организация → официальный сайт → дата → связанный публичный материал. Каждый переход проверяй."],
+    [/провер|вериф|источник/, "Проверь происхождение, дату, автора, первичность, контекст и независимое подтверждение. Две страницы, копирующие одну новость, не являются двумя независимыми источниками."],
+    [/гео|карт|мест/, "Для геолокации выдели уникальные признаки: текст, дорожную разметку, здания, рельеф, растительность, тени. Сравни с картой/спутником и подтверди несколькими признаками."],
+    [/граф|визуал/, "Граф V10 строит сущности и связи. Добавь A и B, укажи тип связи и нажми «Добавить». Узлы можно двигать, пустое место — панорамировать, колесо — масштабировать."],
+    [/книг/, "Открой раздел «Книги». Там есть карточка OSINT Techniques Майкла Баззелла и методические материалы Bellingcat."],
+    [/инструм|сайт|ресурс/, "Открой Web-центр V9. Там есть категории поиска, архивов, изображений, геолокации, доменов, организаций, данных и верификации."],
+    [/приват|безопас|аноним/, "Защищай собственные данные: MFA, уникальные пароли, обновления, минимизация чувствительных данных. Не загружай лишнюю личную информацию во внешние сервисы."],
+    [/ошиб|баг|не работает/, "Сначала попробуй режим «Слабое устройство» в разделе Performance, затем обнови страницу. Если проблема сохраняется — напиши автору через кнопку «Связь с автором»."]
+  ];
+  function aiAnswer(q){
+    const s=String(q||"").toLowerCase();
+    if(!s.trim()) return "Напиши вопрос. Например: «с чего начать?», «что такое pivot?», «как проверить источник?» или «как работает граф?»";
+    for(const [rx,a] of aiAnswers) if(rx.test(s)) return a;
+    return "Я локальный учебный наставник. Спроси про курс, поиск, Dork Lab, pivot, верификацию, геолокацию, граф, инструменты, книги или безопасность.";
+  }
+  function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+  window.v10OpenAI=function(){
+    const a=document.getElementById("v10Ai");if(!a)return;a.classList.add("open");
+    setTimeout(()=>document.getElementById("v10AiInput")?.focus(),20);
+  };
+  window.v10CloseAI=function(){document.getElementById("v10Ai")?.classList.remove("open")};
+  window.v10SendAI=function(){
+    const input=document.getElementById("v10AiInput"),body=document.getElementById("v10AiBody");
+    if(!input||!body)return;const q=input.value.trim();if(!q)return;
+    body.insertAdjacentHTML("beforeend",`<div class="v10-ai-msg user"><b>Ты:</b> ${esc(q)}</div><div class="v10-ai-msg">${esc(aiAnswer(q))}</div>`);
+    input.value="";body.scrollTop=body.scrollHeight;
+  };
+
+  /* Command navigation */
+  const commands=[
+    ["Старт","Центр ученика","v9hub"],["Курс","Обучение","course"],["Dork Lab","Поисковые операторы","dorklab"],
+    ["Граф V10","Визуализатор","graphLab"],["Кейсы","Практика","cases"],["Книги","Литература","books"],
+    ["Web-центр","Инструменты","v9tools"],["Лаборатории","Практика","labs"],["AI","Помощник","assistant"],
+    ["Тест","Проверка знаний","quiz"],["Приватность","Защита данных","privacy"],["Этика","Границы OSINT","ethics"],
+    ["Путь","Roadmap","roadmap"],["Связь","Автор","feedback"]
+  ];
+  window.v10OpenCommand=function(){
+    const m=document.getElementById("v10Command");if(!m)return;m.classList.add("open");
+    const i=document.getElementById("v10CommandInput");if(i){i.value="";v10RenderCommands();setTimeout(()=>i.focus(),10)}
+  };
+  window.v10CloseCommand=function(){document.getElementById("v10Command")?.classList.remove("open")};
+  window.v10RenderCommands=function(){
+    const q=(document.getElementById("v10CommandInput")?.value||"").toLowerCase().trim();
+    const list=document.getElementById("v10CommandList");if(!list)return;
+    const arr=commands.filter(x=>(x[0]+" "+x[1]).toLowerCase().includes(q));
+    list.innerHTML=arr.map(x=>`<div class="v10-command-item" onclick="v10Go('${x[2]}')"><b>${esc(x[0])}</b><small>${esc(x[1])}</small></div>`).join("")||'<div class="v10-command-item">Ничего не найдено.</div>';
+  };
+  window.v10Go=function(id){v10CloseCommand();document.getElementById(id)?.scrollIntoView({behavior:"smooth",block:"start"})};
+  window.v10CommandKey=function(e){
+    if(e.key==="Escape")v10CloseCommand();
+    if(e.key==="Enter")document.querySelector("#v10CommandList .v10-command-item")?.click();
+  };
+  document.addEventListener("keydown",e=>{
+    if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();v10OpenCommand()}
+    if(e.key==="Escape"){v10CloseCommand();document.getElementById("v10ContactPanel")?.classList.remove("open")}
+  });
+
+  /* SVG Graph V10 */
+  const nodes=[],edges=[];
+  let zoom=1,panX=0,panY=0,dragNode=null,panStart=null;
+  const svg=()=>document.getElementById("v10GraphSvg");
+  const world=()=>document.getElementById("v10GraphWorld");
+  const nodeLayer=()=>document.getElementById("v10GraphNodes");
+  const edgeLayer=()=>document.getElementById("v10GraphEdges");
+  const stage=()=>document.getElementById("v10GraphStage");
+
+  function graphPoint(evt){
+    const s=svg();const r=s.getBoundingClientRect();
+    const x=(evt.clientX-r.left)*(1000/r.width),y=(evt.clientY-r.top)*(540/r.height);
+    return {x:(x-panX-500)/zoom+500,y:(y-panY-270)/zoom+270};
+  }
+  function graphTransform(){world()?.setAttribute("transform",`translate(${panX} ${panY}) translate(500 270) scale(${zoom}) translate(-500 -270)`)}
+  function graphText(name){return name.length>22?name.slice(0,20)+"…":name}
+  function findNode(name){return nodes.find(n=>n.name.toLowerCase()===name.toLowerCase())}
+  function getNode(name){
+    let n=findNode(name);
+    if(!n){n={id:crypto?.randomUUID?.()||String(Date.now()+Math.random()),name,x:500+(Math.random()-.5)*330,y:270+(Math.random()-.5)*210,r:30};nodes.push(n)}
+    return n
+  }
+  function renderGraph(){
+    const nl=nodeLayer(),el=edgeLayer(),empty=document.getElementById("v10GraphEmpty");
+    if(!nl||!el)return;
+    nl.innerHTML="";el.innerHTML="";
+    edges.forEach(e=>{
+      const a=nodes.find(n=>n.id===e.a),b=nodes.find(n=>n.id===e.b);if(!a||!b)return;
+      const g=document.createElementNS("http://www.w3.org/2000/svg","g");
+      const line=document.createElementNS("http://www.w3.org/2000/svg","line");
+      line.setAttribute("x1",a.x);line.setAttribute("y1",a.y);line.setAttribute("x2",b.x);line.setAttribute("y2",b.y);line.setAttribute("class","v10-graph-edge");line.setAttribute("marker-end","url(#v10Arrow)");
+      const t=document.createElementNS("http://www.w3.org/2000/svg","text");t.setAttribute("x",(a.x+b.x)/2);t.setAttribute("y",(a.y+b.y)/2-7);t.setAttribute("class","v10-graph-edge-label");t.textContent=e.label;
+      g.append(line,t);el.appendChild(g);
+    });
+    nodes.forEach(n=>{
+      const g=document.createElementNS("http://www.w3.org/2000/svg","g");g.setAttribute("class","v10-graph-node");g.dataset.id=n.id;g.setAttribute("transform",`translate(${n.x} ${n.y})`);
+      const c=document.createElementNS("http://www.w3.org/2000/svg","circle");c.setAttribute("r",n.r);
+      const t=document.createElementNS("http://www.w3.org/2000/svg","text");t.setAttribute("dy","4");t.textContent=graphText(n.name);
+      g.append(c,t);nl.appendChild(g);
+      g.addEventListener("pointerdown",e=>{e.stopPropagation();dragNode={n,dx:graphPoint(e).x-n.x,dy:graphPoint(e).y-n.y};g.setPointerCapture?.(e.pointerId)});
+      g.addEventListener("dblclick",e=>{e.stopPropagation();const idx=nodes.findIndex(x=>x.id===n.id);if(idx>=0)nodes.splice(idx,1);for(let i=edges.length-1;i>=0;i--)if(edges[i].a===n.id||edges[i].b===n.id)edges.splice(i,1);renderGraph();updateGraphStats()});
+    });
+    graphTransform();
+    if(empty)empty.style.display=nodes.length?"none":"grid";
+  }
+  function updateGraphStats(){
+    const s=document.getElementById("v10GraphStatus"),z=document.getElementById("v10GraphZoom");
+    if(s)s.textContent=`Узлов: ${nodes.length} · Связей: ${edges.length}`;
+    if(z)z.textContent=`Масштаб: ${Math.round(zoom*100)}%`;
+  }
+  window.v10AddGraphEdge=function(){
+    const a=document.getElementById("v10NodeA")?.value.trim(),b=document.getElementById("v10NodeB")?.value.trim(),l=document.getElementById("v10Edge")?.value.trim()||"связь";
+    if(!a||!b||a.toLowerCase()===b.toLowerCase())return;
+    const A=getNode(a),B=getNode(b);
+    if(!edges.some(e=>(e.a===A.id&&e.b===B.id)||(e.a===B.id&&e.b===A.id)))edges.push({a:A.id,b:B.id,label:l});
+    document.getElementById("v10NodeA").value="";document.getElementById("v10NodeB").value="";document.getElementById("v10Edge").value="";
+    renderGraph();updateGraphStats();
+  };
+  window.v10DemoGraph=function(){
+    nodes.length=0;edges.length=0;zoom=1;panX=0;panY=0;
+    const add=(a,b,l)=>{const A=getNode(a),B=getNode(b);edges.push({a:A.id,b:B.id,label:l})};
+    add("Организация","Официальный сайт","владеет");add("Официальный сайт","PDF","публикует");add("PDF","Дата","содержит");add("PDF","Архив","сохранён");
+    renderGraph();updateGraphStats();
+  };
+  window.v10ClearGraph=function(){nodes.length=0;edges.length=0;zoom=1;panX=0;panY=0;renderGraph();updateGraphStats()};
+  window.v10CenterGraph=function(){
+    if(!nodes.length){zoom=1;panX=0;panY=0;renderGraph();return}
+    const cx=nodes.reduce((a,n)=>a+n.x,0)/nodes.length,cy=nodes.reduce((a,n)=>a+n.y,0)/nodes.length;
+    panX=500-cx;panY=270-cy;renderGraph();
+  };
+  window.v10ExportGraph=function(){
+    const data={version:10,createdAt:new Date().toISOString(),nodes,edges};
+    const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"}),url=URL.createObjectURL(blob),a=document.createElement("a");
+    a.href=url;a.download="osint-academy-v10-graph.json";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),800);
+  };
+
+  function initGraph(){
+    const s=svg();if(!s)return;
+    s.addEventListener("pointerdown",e=>{
+      if(e.target.closest(".v10-graph-node"))return;
+      panStart={x:e.clientX,y:e.clientY,px:panX,py:panY};s.classList.add("dragging");s.setPointerCapture?.(e.pointerId);
+    });
+    s.addEventListener("pointermove",e=>{
+      if(dragNode){
+        const p=graphPoint(e);dragNode.n.x=p.x-dragNode.dx;dragNode.n.y=p.y-dragNode.dy;renderGraph();
+      }else if(panStart){
+        const r=s.getBoundingClientRect();panX=panStart.px+(e.clientX-panStart.x)*(1000/r.width);panY=panStart.py+(e.clientY-panStart.y)*(540/r.height);graphTransform();
+      }
+    });
+    const end=()=>{dragNode=null;panStart=null;s.classList.remove("dragging")};
+    s.addEventListener("pointerup",end);s.addEventListener("pointercancel",end);
+    s.addEventListener("wheel",e=>{
+      e.preventDefault();const r=s.getBoundingClientRect(),mx=(e.clientX-r.left)*(1000/r.width),my=(e.clientY-r.top)*(540/r.height);
+      const wx=(mx-panX-500)/zoom+500,wy=(my-panY-270)/zoom+270,newZoom=Math.max(.45,Math.min(2.5,zoom*(e.deltaY<0?1.12:.89)));
+      panX=mx-500-(wx-500)*newZoom;panY=my-270-(wy-270)*newZoom;zoom=newZoom;graphTransform();updateGraphStats();
+    },{passive:false});
+    renderGraph();updateGraphStats();
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",initGraph,{once:true});else initGraph();
+
+  /* Performance: do not repeatedly inspect hardware. */
+  window.v10SetPerf=function(mode){
+    document.documentElement.dataset.performance=mode;
+    try{localStorage.setItem("osint_perf_v5",mode)}catch(e){}
+  };
+
+  /* Keyboard shortcut to AI */
+  document.addEventListener("keydown",e=>{
+    if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="j"){e.preventDefault();v10OpenAI()}
+  });
+})();
+
+</script>
+<div class="small-note" style="text-align:center;padding:20px">OSINT Academy v7 · By : Заблудший · Локальный прогресс и настройки хранятся только в браузере.</div>
+</body>
+</html>
